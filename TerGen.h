@@ -14,29 +14,32 @@ private:
     //the smoothness ratio between noise layers
     double Alpha = 0.0;
     //noise functions
-    vector<Func*> Applied_Layers;
+    vector<Func*> Functions;
     //the generated terrain
-    vector<vector<vector<Chunk>>> Terrain;
+    vector<Chunk> Terrain;
+    //Derivative path finding generation scale
+    int Derivate_Distance = 0;
 public:
     TerGen() {}
     void Add_Function(vector<Func*> f) {
         for (auto i : f)
-            Applied_Layers.push_back(i);
+            Functions.push_back(i);
         return;
     }
-    void Smooth_Terrain(double alpha = 0.0) {
-        if (alpha != 0.0)
-            Alpha = alpha;
-        for (auto f : Applied_Layers)
-            for (auto cx : Terrain)
-                for (auto cy : cx)
-                    for (auto cz : cy)
-                        for (auto tx : cz.Tiles)
-                            for (auto ty : tx)
-                                for (auto tz : ty) {
+    void Use_Functions(Dot Starting_Location, Dot Ending_Location) {
+        for (auto f : Functions) {
 
-                                }
-
+        }
+    }
+    void Use_Functions() {
+        for (auto f : Functions) {
+            for (Chunk* c : Terrain)
+                for (Layer* l : c->Chunk)
+                    for (auto rows : l->Layer)
+                        for (auto tile : rows)
+                            tile = f->Function({ tile.X + l->X, tile.Y + l->Y, tile.Z + l->Z, tile.Texture });
+        }
+        return;
     }
 };
 

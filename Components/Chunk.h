@@ -1,16 +1,16 @@
 #ifndef _CHUNK_H_
 #define _CHUNK_H_
 
-#include "Tile.h"
+#include "Layer.h"
 #include <vector>
 
 using namespace std;
 
-class Chunk : public Dot{
-	public:
-		//3D vector of the chunk
-		//X, Y, Z
-		vector<vector<vector<Tile>>> Tiles;
+class Chunk {
+public:
+	//3D vector of the chunk
+	//the kayers can be on top of eachother or side by side
+	vector<Layer> Chunk;
 };
 
 #endif
