@@ -26,20 +26,9 @@ public:
             Functions.push_back(i);
         return;
     }
-    void Use_Functions(Dot Starting_Location, Dot Ending_Location) {
-        for (auto f : Functions) {
-
-        }
-    }
-    void Use_Functions() {
-        for (auto f : Functions) {
-            for (Chunk* c : Terrain)
-                for (Layer* l : c->Chunk)
-                    for (auto rows : l->Layer)
-                        for (auto tile : rows)
-                            tile = f->Function({ tile.X + l->X, tile.Y + l->Y, tile.Z + l->Z, tile.Texture });
-        }
-        return;
+    void Factory();
+    void Detect_Chunk(int i) {
+        //the idea of going layer by layer like in Evie.
     }
 };
 
