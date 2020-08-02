@@ -1,0 +1,24 @@
+﻿  main.cpp
+C:\Users\Quanf\source\repos\TerGen\main.cpp(16,48): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=long
+          ]
+C:\Users\Quanf\source\repos\TerGen\main.cpp(16,38): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=long
+          ]
+C:\Users\Quanf\source\repos\TerGen\main.cpp(16,28): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=long
+          ]
+C:\Users\Quanf\source\repos\TerGen\main.cpp(16,20): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\Users\Quanf\source\repos\TerGen\main.cpp(27,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Quanf\source\repos\TerGen\main.cpp(28,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\Quanf\source\repos\TerGen\main.cpp(29,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  SimplexNoise.cpp
+  Generating Code...
+LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
+  microsoft on kuollut.vcxproj -> C:\Users\Quanf\source\repos\TerGen\Release\microsoft on kuollut.dll
