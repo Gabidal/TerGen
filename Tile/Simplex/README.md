@@ -1,96 +1,89 @@
-Perlin Simplex Noise C++ Implementation (1D, 2D, 3D)
-========================================================
+[![discord](https://img.shields.io/discord/703636892901441577?style=flat-square&logo=discord "Discord")](https://discord.gg/SHVaVfV)
 
-[![Travis CI Linux Build Status](https://travis-ci.org/SRombauts/SimplexNoise.svg)](https://travis-ci.org/SRombauts/SimplexNoise "Travis CI Linux Build Status")
-[![AppVeyor Windows Build status](https://ci.appveyor.com/api/projects/status/github/SRombauts/SimplexNoise?svg=true)](https://ci.appveyor.com/project/SbastienRombauts/SimplexNoise "AppVeyor Windows Build status")
+# FastNoise
 
-## About Perlin's "Simplex" Noise
+FastNoise is an open source noise generation library with a large collection of different noise algorithms. This library has been designed for realtime usage from the ground up, so has been optimised for speed without sacrificing noise quality.
 
-- Perlin's "Classic" Noise (1984) is an algorithm producing pseudo-random fluctuations
-  simulating natural looking variations, producing paterns all of the same size.
-  It is a kind of gradiant-noise algorithm, invented by Ken Perlin while working
-  on visual special effects for the Tron movie (1982).
-  It works by interpolating pseudo-random gradiants defined in a multi-dimensionnal grid.
-  [Ken Perlin original references](http://mrl.nyu.edu/~perlin/doc/oscar.html)
-- Perlin's "Improved" Noise (2002) switches to a new interpolation fonction with
-  a 2nd derivative zero at t=0 and t=1 to remove artifacts on integer values,
-  and switches to using predefined gradients of unit lenght to the middle of each edges.
-  [Ken Perlin original references](http://mrl.nyu.edu/~perlin/paper445.pdf)
-- Perlin's "Simplex" Noise (2001) rather than placing each input point into a cubic grid,
-  based on the integer parts of its (x,y,z) coordinate values, placed them onto a simplicial grid
-  (think triangles instead of squares, pyramids instead of cubes...)
-  [Ken Perlin original references](http://www.csee.umbc.edu/~olano/s2002c36/ch02.pdf)
+This project started when my search to find a good noise library for procedural terrain generation concluded without an obvious choice. I enjoyed the options and customisation of Accidental Noise Library and the speed of LibNoise, so many of the techniques from these libraries and the knowledge I gained from reading through their source has gone into creating FastNoise.
 
-## Coherent noise
+I have now also created [FastNoise SIMD](https://github.com/Auburns/FastNoiseSIMD), which utilises SIMD CPU instructions to gain huge performance boosts. It is slightly less flexible and cannot be converted to other languages, but if you can I would highly suggest using this for heavy noise generation loads.
 
-A coherent noise is a type of smooth pseudorandom noise with following properties:.
-- same input will always return the same output.
-- small change of the input will produce small change of the output.
-- large change of the input will produce random change of the output.
-
-## Fractal noise / Fractional Brownian Motion
-
-Fractional Brownian Motion (fBm) is the summation of successive octaves of coherent noise,
-each with higher frequency and lower amplitude.
-
-- Frequency of an octave of noise is the "width" of the pattern
-- Amplitude of an octave of noise it the "height" of its feature
-- Lacunarity specifies the frequency multipler between successive octaves (typically 2.0).
-- Persistence is the loss of amplitude between successive octabes (usually 1/lacunarity).
-
-2D image of fractal noise with 7 octaves of 2D Simplex Noise (from my [SimplexNoiseCImg example project](https://github.com/SRombauts/SimplexNoiseCImg)):
-![1 octave of 2D Simplex Noise](Screenshots/Simplex2D-7octaves.png)
-
-## Code attribution
-
-This C++ implementation is based on the speed-improved Java version 2012-03-09
-by Stefan Gustavson (original Java source code in the public domain).
-http://webstaff.itn.liu.se/~stegu/simplexnoise/SimplexNoise.java:
-- Based on example code by Stefan Gustavson (stegu@itn.liu.se).
-- Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
-- Better rank ordering method by Stefan Gustavson in 2012.
-
-[Simplex noise demystified](http://staffwww.itn.liu.se/~stegu/simplexnoise/simplexnoise.pdf),
-Stefan Gustavson, Linköping University, Sweden (stegu@itn.liu.se), 2005-03-22
-
-## License
-
-Copyright (c) 2014-2019 Sebastien Rombauts (sebastien.rombauts@gmail.com)
-
-Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
-or copy at http://opensource.org/licenses/MIT)
-
-## Current Status
 ### Features
-- 1D, 2D and 3D Perlin Simplex Noise algorithms
-- standard Fractal/Fractional Brownian Motion (fBm) noise summation of multiple octaves
-- CMake project with, cpplint to check code style, cppchek to check code sanity, Doxygen to generate code documentaion
+- Value Noise 2D, 3D
+- Perlin Noise 2D, 3D
+- Simplex Noise 2D, 3D, 4D
+- Cubic Noise 2D, 3D
+- Gradient Perturb 2D, 3D
+- Multiple fractal options for all of the above
+- Cellular (Voronoi) Noise 2D, 3D
+- White Noise 2D, 3D, 4D
+- Supports floats or doubles
 
-### Wishlist
-- Implement 4D Perlin Simplex Noise algorithms
-- Add a parameter for permutation (offset and mask?) of the random table (could be way better than simple offseting applied by the user application)
+### Wiki
+Usage and documentation available in wiki
 
-## How to contribute
-### GitHub website
-The most efficient way to help and contribute to this wrapper project is to
-use the tools provided by GitHub:
-- please fill bug reports and feature requests here: https://github.com/SRombauts/SimplexNoise/issues
-- fork the repository, make some small changes and submit them with pull-request
+[Wiki Link](https://github.com/Auburns/FastNoise/wiki)
 
-### Contact
-You can also email me directly.
+### Related repositories
+ - [FastNoise C#](https://github.com/Auburns/FastNoise_CSharp)
+ - [FastNoise Java](https://github.com/Auburns/FastNoise_Java)
+ - [FastNoise SIMD](https://github.com/Auburns/FastNoiseSIMD)
+ - [FastNoise Unity](https://www.assetstore.unity3d.com/en/#!/content/70706)
+ - [Unreal FastNoise](https://github.com/midgen/UnrealFastNoise)
 
-## See Also
-[SRombauts GitHub website](http://srombauts.github.com)
+Credit to [CubicNoise](https://github.com/jobtalle/CubicNoise) for the cubic noise algorithm
 
-### Continuous Integration
+## FastNoise Preview
 
-This project is continuously tested under Ubuntu Linux with the gcc and clang compilers
-using the Travis CI community service with the above CMake building and testing procedure.
-It is also tested in the same way under Windows Server 2012 R2 with Visual Studio 2013 compiler
-using the AppVeyor countinuous integration service.
+I have written a compact testing application for all the features included in FastNoise with a visual representation. I use this for development purposes and testing noise settings used in terrain generation.
 
-Detailed results can be seen online:
- - https://travis-ci.org/SRombauts/SimplexNoise
- - https://ci.appveyor.com/project/SbastienRombauts/SimplexNoise
+Download links can be found in the [Releases Section](https://github.com/Auburns/FastNoise/releases).
 
+![FastNoise Preview](http://i.imgur.com/uG7Vepc.png)
+
+
+# Performance Comparisons
+Using default noise settings on FastNoise and matching those settings across the other libraries where possible.
+
+Timings below are x1000 ns to generate 32x32x32 points of noise on a single thread.
+
+- CPU: Intel Xeon Skylake @ 2.0Ghz
+- Compiler: Intel 17.0 x64
+
+| Noise Type  | FastNoise | FastNoiseSIMD AVX2 | LibNoise | FastNoise 2D |
+|-------------|-----------|--------------------|----------|--------------|
+| White Noise | 141       | 9                  |          | 111          |
+| Value       | 642       | 152                |          | 361          |
+| Perlin      | 1002      | 324                | 1368     | 473          |
+| Simplex     | 1194      | 294                |          | 883          |
+| Cellular    | 2979      | 1283               | 58125    | 1074         |
+| Cubic       | 2979      | 952                |          | 858          |
+
+Comparision of fractal performance [here](https://github.com/Auburns/FastNoiseSIMD/wiki/In-depth-SIMD-level).
+
+# Examples
+## Cellular Noise
+![Cellular Noise](http://i.imgur.com/quAic8M.png)
+
+![Cellular Noise](http://i.imgur.com/gAd9Y2t.png)
+
+![Cellular Noise](http://i.imgur.com/7kJd4fA.png)
+
+## Fractal Noise
+![Fractal Noise](http://i.imgur.com/XqSD7eR.png)
+
+## Value Noise
+![Value Noise](http://i.imgur.com/X2lbFZR.png)
+
+## White Noise
+![White Noise](http://i.imgur.com/QIlYvyQ.png)
+
+## Gradient Perturb
+![Gradient Perturb](http://i.imgur.com/gOjc1u1.png)
+
+![Gradient Perturb](http://i.imgur.com/ui045Bk.png)
+
+![Gradient Perturb](http://i.imgur.com/JICFypT.png)
+
+
+# Any suggestions or questions welcome

@@ -53,7 +53,7 @@ public:
 		Functions.push_back(f);
 	}
 	void Apply_Functions() {
-		ctpl::thread_pool pool(std::thread::hardware_concurrency() - 3);
+		ctpl::thread_pool pool(std::thread::hardware_concurrency() - 2);
 		for (auto f : Functions) {
 			for (int x = 0; x < Scale; x++)
 				for (int y = 0; y < Scale; y++)
