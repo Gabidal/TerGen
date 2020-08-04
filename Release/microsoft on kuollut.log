@@ -1,24 +1,10 @@
-﻿  main.cpp
-C:\Users\Quanf\source\repos\TerGen\main.cpp(16,48): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=long
-          ]
-C:\Users\Quanf\source\repos\TerGen\main.cpp(16,38): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=long
-          ]
-C:\Users\Quanf\source\repos\TerGen\main.cpp(16,28): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
-          with
-          [
-              _Ty=long
-          ]
-C:\Users\Quanf\source\repos\TerGen\main.cpp(16,20): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
-C:\Users\Quanf\source\repos\TerGen\main.cpp(27,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Quanf\source\repos\TerGen\main.cpp(28,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-C:\Users\Quanf\source\repos\TerGen\main.cpp(29,12): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  SimplexNoise.cpp
-  Generating Code...
-LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
-  microsoft on kuollut.vcxproj -> C:\Users\Quanf\source\repos\TerGen\Release\microsoft on kuollut.dll
+﻿LINK : warning LNK4075: ignoring '/INCREMENTAL' due to '/OPT:ICF' specification
+main.obj : error LNK2019: unresolved external symbol _glfwInit referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwTerminate referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwCreateWindow referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwWindowShouldClose referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwPollEvents referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwMakeContextCurrent referenced in function _main
+main.obj : error LNK2019: unresolved external symbol _glfwSwapBuffers referenced in function _main
+C:\Users\Quanf\source\repos\TerGen\Tile\GL\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\Quanf\source\repos\TerGen\Release\microsoft on kuollut.exe : fatal error LNK1120: 7 unresolved externals
