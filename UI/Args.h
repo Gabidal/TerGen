@@ -5,7 +5,7 @@ using namespace std;
 enum class Formats
 {
 	RAW,
-
+	OBJ,
 };
 
 class Args {
