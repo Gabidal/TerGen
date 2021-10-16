@@ -1,21 +1,16 @@
 #include "../MC/dualmc.h"
 #include "../Node/Node.h"
 #include "../Node/Cube.h"
+#include "../Core/Core.h"
 
 #include <iostream>
 
 using namespace std;
 using namespace dualmc;
 
-extern class Core* Core;
-
 class MC_Frame {
 private:
 	vector<Node*> Input;
-
-	double Width = Start_Point->X - End_point->X + 1;
-	double Height = Start_Point->Y - End_point->Y + 1;
-	double Depth = Start_Point->Z - End_point->Z + 1;
 
 	vector<char> Space;
 

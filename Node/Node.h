@@ -1,3 +1,6 @@
+#ifndef _NODE_H_
+#define _NODE_H_
+
 #include <iostream>
 
 using namespace std;
@@ -11,3 +14,5 @@ public:
 
 	Node(double x, double y, double z);
 };
+
+#endif

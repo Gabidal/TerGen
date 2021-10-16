@@ -1,3 +1,5 @@
+#ifndef _CORE_H_
+#define _CORE_H_
 #include "../Node/Node.h"
 
 #include <iostream>
@@ -12,5 +14,16 @@ public:
 
 	vector<Node*> Output;
 
-	Core();
+	double Width = End_Point->X - Start_Point->X + 1;
+	double Height = End_Point->Y - Start_Point->Y + 1;
+	double Depth = End_Point->Z - Start_Point->Z + 1;
+
+	Core(vector<Node*> Out);
+	Core(vector<Node*> Out, Node* SP, Node* EP);
+
+	void Factory();
+	void Populize();
+	void Noise();
 };
+
+#endif

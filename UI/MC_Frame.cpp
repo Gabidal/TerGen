@@ -1,13 +1,15 @@
 #include "MC_Frame.h"
 
+extern Core* core;
+
 vector<char> MC_Frame::Transform_Node_To_Space()
 {
     vector<char> Result;
 
-    Result.reserve(Width * Height * Depth);
+    Result.resize(core->Width * core->Height * core->Depth);
 
     for (auto i : Input) {
-        Result[(i->X) + (i->Y * Width) + (i->Z * Width * Height)] = 2;
+        Result[(i->X) + (i->Z * core->Width) + (i->Y * core->Width * core->Height)] = 2;
     }
 
     return Result;
@@ -46,7 +48,7 @@ MC_Frame::MC_Frame(vector<Node*> in)
     vector<Vertex> Vertices;
     vector<Quad> Quads;
 
-    builder.build(Space.data(), Width, Height, Depth,
+    builder.build(Space.data(), core->Width, core->Height, core->Depth,
         1, true, true, Vertices, Quads);
 
     Output_Node = Transform_Vertex_To_Node(Vertices);

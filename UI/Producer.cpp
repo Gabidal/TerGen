@@ -17,7 +17,7 @@ Producer::Producer(vector<Node*> out)
 
 void Producer::Factory()
 {
-	Write_Output_As_Raw_TXT();
+    Write_Output_As_Obj();
 }
 
 void Producer::Write_Output_As_Obj()

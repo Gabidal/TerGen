@@ -9,7 +9,7 @@
 using namespace std;
 
 Args* CMD = nullptr;
-class Core* Core = nullptr;
+Core* core = nullptr;
 
 int main(int argc, const char* argv[]) {
 	//if no parameters are passed, give user help
@@ -21,7 +21,9 @@ int main(int argc, const char* argv[]) {
 
 	CMD = new Args(argv, argc);
 
+	core = new Core(Nodes);
 
+	Nodes = core->Output;
 
 	Producer producer(Nodes);
 }
