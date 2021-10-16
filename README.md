@@ -1,2 +1,0 @@
-# TerGen
-Advanced Terrain Generator
