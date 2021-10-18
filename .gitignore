@@ -9,3 +9,5 @@ TerGen.sln
 Debug
 x64
 .vs
+Output.mtl
+Output.obj
