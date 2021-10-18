@@ -18,7 +18,7 @@ public:
 	vector<Node*> Master;
 
 	vector<Chunk*> Cluster;
-	vector<void (*)(vector<Node*>, vector<Chunk*>)> Functions;
+	vector<void (*)(vector<Node*>, vector<Chunk*>&)> Functions;
 
 	double Width;
 	double Depth;

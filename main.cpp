@@ -2,6 +2,8 @@
 #include "UI/Producer.h"
 #include "Node/Node.h"
 #include "Core/Core.h"
+#include "Node/Chunk.h"
+#include "Functions/Functions.h"
 
 #include <iostream>
 #include <vector>
@@ -19,13 +21,15 @@ int main(int argc, const char* argv[]) {
 		cout << "-res [how much points shall there be?]" << endl;
 	}
 
-	vector<Node*> Nodes;
+	vector<Node*> Master;
 
 	CMD = new Args(argv, argc);
 
-	core = new Core(Nodes, CMD->Resolution);
+	core = new Core(CMD->Resolution, {
+		FUNCTIONS::Mountain
+	});
 
-	Nodes = core->Master;
+	Master = core->Master;
 
-	Producer producer(Nodes);
+	Producer producer(Master);
 }
