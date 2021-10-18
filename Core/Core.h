@@ -12,18 +12,24 @@ public:
 	Node* Start_Point = new Node(0, 0, 0);
 	Node* End_Point = new Node(100, 100, 100);
 
+	long Resolution = 0;
+
 	vector<Node*> Output;
 
-	double Width = End_Point->X - Start_Point->X + 1;
-	double Height = End_Point->Y - Start_Point->Y + 1;
-	double Depth = End_Point->Z - Start_Point->Z + 1;
+	double Width;
+	double Depth;
+	double Height;
 
-	Core(vector<Node*> Out);
-	Core(vector<Node*> Out, Node* SP, Node* EP);
+	Core(vector<Node*> Out, int resolution);
+	Core(vector<Node*> Out, Node* SP, Node* EP, int resolution);
 
 	void Factory();
 	void Populize();
 	void Noise();
+
+	int Index(int X, int Z);
+
+	void Calculate_World_Size();
 };
 
 #endif
