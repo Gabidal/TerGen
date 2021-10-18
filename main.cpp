@@ -25,7 +25,7 @@ int main(int argc, const char* argv[]) {
 
 	core = new Core(Nodes, CMD->Resolution);
 
-	Nodes = core->Output;
+	Nodes = core->Master;
 
 	Producer producer(Nodes);
 }

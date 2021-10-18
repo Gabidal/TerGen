@@ -10,9 +10,10 @@ vector<char> MC_Frame::Transform_Node_To_Space()
 
     for (auto i : Input) {
         for (int Y = i->Y; Y >= 0; Y--) {
-            Result[(i->X) + (i->Z * core->Width) + (Y * core->Width * core->Depth)] = 2;
+            Result[i->X + (i->Z * core->Width) + (Y * core->Width * core->Depth)] = 2;
         }
     }
+
 
     return Result;
 }

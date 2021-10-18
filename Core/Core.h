@@ -1,6 +1,7 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 #include "../Node/Node.h"
+#include "../Node/Chunk.h"
 
 #include <iostream>
 #include <vector>
@@ -14,21 +15,22 @@ public:
 
 	long Resolution = 0;
 
-	vector<Node*> Output;
+	vector<Node*> Master;
+
+	vector<Chunk*> Cluster;
+	vector<void (*)(vector<Node*>, vector<Chunk*>)> Functions;
 
 	double Width;
 	double Depth;
 	double Height;
 
-	Core(vector<Node*> Out, int resolution);
-	Core(vector<Node*> Out, Node* SP, Node* EP, int resolution);
+	Core(int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions);
+	Core(Node* SP, Node* EP, int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions);
 
 	void Factory();
 	void Populize();
-	void Noise();
 
 	int Index(int X, int Z);
-
 	void Calculate_World_Size();
 };
 

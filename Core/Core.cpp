@@ -1,11 +1,11 @@
 #include "Core.h"
 
 //Use this constructor if you dont want to limit the world size.
-Core::Core(vector<Node*> Out, int resolution)
+Core::Core(int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions)
 {
-	Output = Out;
-
 	Resolution = resolution;
+
+	Functions = functions;
 
 	Factory();
 
@@ -13,13 +13,14 @@ Core::Core(vector<Node*> Out, int resolution)
 }
 
 //Use this constructor to limit the size of the world
-Core::Core(vector<Node*> Out, Node* SP, Node* EP, int resolution)
+Core::Core(Node* SP, Node* EP, int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions)
 {
-	Output = Out;
 	Start_Point = SP;
 	End_Point = EP;
 
 	Resolution = resolution;
+
+	Functions = functions;
 
 	Width = End_Point->X - Start_Point->X + 1;
 	Depth = End_Point->Z - Start_Point->Z + 1;
@@ -31,21 +32,15 @@ Core::Core(vector<Node*> Out, Node* SP, Node* EP, int resolution)
 void Core::Factory()
 {
 	Populize();
-	Noise();
+
+	for (auto f : Functions) {
+		f(Master, Cluster);
+	}
 }
 
 void Core::Populize()
 {
-	Output.resize(Resolution * Resolution);
-}
-
-void Core::Noise()
-{
-	for (int Z = 0; Z < Resolution; Z++) {
-		for (int X = 0; X < Resolution; X++) {
-			Output[Index(X, Z)] = new Node(X, Z, rand() % 100);
-		}
-	}
+	Master.resize(Resolution * Resolution);
 }
 
 int Core::Index(int X, int Z)
@@ -64,7 +59,7 @@ void Core::Calculate_World_Size()
 	double Least_Height = 0.0;
 
 	//traverse through the list of points in space
-	for (auto point : Output) {
+	for (auto point : Master) {
 
 		//Calculate the largest points in space
 		//-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
