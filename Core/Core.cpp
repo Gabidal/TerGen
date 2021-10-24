@@ -1,7 +1,7 @@
 #include "Core.h"
 
 //Use this constructor if you dont want to limit the world size.
-Core::Core(int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions)
+Core::Core(int resolution, vector<Generator> functions)
 {
 	Resolution = resolution;
 
@@ -13,7 +13,7 @@ Core::Core(int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> func
 }
 
 //Use this constructor to limit the size of the world
-Core::Core(Node* SP, Node* EP, int resolution, vector<void (*)(vector<Node*>, vector<Chunk*>&)> functions)
+Core::Core(Node* SP, Node* EP, int resolution, vector<Generator> functions)
 {
 	Start_Point = SP;
 	End_Point = EP;
@@ -89,3 +89,20 @@ void Core::Calculate_World_Size()
 	Depth = Most_Depth - Least_Depth + 1;
 	Height = Most_Height - Least_Height + 1;
 }
+
+int Core::Allocate_Color(Generator Func)
+{
+	//the idea here is to increment the results R.G.B values
+	//to represent the largest  values of the all
+
+	int Result = 0;
+
+	Result = Colors.back().first;
+
+	Result++;
+
+	Colors.push_back({ Result, Func });
+
+	return Result;
+}
+

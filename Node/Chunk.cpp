@@ -5,13 +5,13 @@ Chunk::Chunk(Node* alpha)
 	Alpha = alpha;
 }
 
-Chunk::Chunk(Node* alpha, Node* color)
+Chunk::Chunk(Node* alpha, int color)
 {
 	Alpha = alpha;
 	Color = color;
 }
 
-Chunk::Chunk(Node* alpha, Node* color, vector<Node*> data)
+Chunk::Chunk(Node* alpha, int color, vector<Node*> data)
 {
 	Alpha = alpha;
 	Color = color;

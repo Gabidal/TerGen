@@ -26,7 +26,7 @@ int main(int argc, const char* argv[]) {
 	CMD = new Args(argv, argc);
 
 	core = new Core(CMD->Resolution, {
-		FUNCTIONS::Mountain
+		FUNCTIONS::Parabola
 	});
 
 	Master = core->Master;

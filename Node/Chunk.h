@@ -12,10 +12,10 @@ class Chunk {
 public:
 	vector<Node*> Data;
 	Node* Alpha;
-	Node* Color;
+	int Color;
 	Chunk(Node* alpha);
-	Chunk(Node* alpha, Node* color);
-	Chunk(Node* alpha, Node* color, vector<Node*> data);
+	Chunk(Node* alpha, int color);
+	Chunk(Node* alpha, int color, vector<Node*> data);
 };
 
 #endif
