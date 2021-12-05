@@ -1,6 +1,5 @@
 #ifndef _CORE_H_
 #define _CORE_H_
-#include "../Node/Node.h"
 #include "../Node/Chunk.h"
 
 #include <iostream>
@@ -9,37 +8,34 @@
 using namespace std;
 
 
-typedef void (*Generator)(vector<Node*>, vector<Chunk*>&);
+typedef Pattern* (*Pattern_Generator)(Chunk*);
+typedef void (*Behaviour_Generator)(vector<Chunk*>& Chunks, int X, int Y, int Z);
 
 class Core {
 public:
-	Node* Start_Point = new Node(0, 0, 0);
-	Node* End_Point = new Node(100, 100, 100);
+	int Resolution;
+	int Chunk_Count;
 
-	long Resolution = 0;
+	vector<Chunk*> Chunks;
 
-	vector<Node*> Master;
+	vector<Pattern*> Patterns;
 
-	vector<Chunk*> Cluster;
+	vector<pair<char, Pattern_Generator>> Pattern_Functions;
 
-	vector<Generator> Functions;
+	vector<Behaviour_Generator> Behaviour_Functions;
 
-	vector<pair<int, Generator>> Colors;
+	vector<pair<int, Pattern*>> Colors;
 
-	double Width;
-	double Depth;
-	double Height;
-
-	Core(int resolution, vector<Generator> functions);
-	Core(Node* SP, Node* EP, int resolution, vector<Generator> functions);
+	Core(int Chunk_Count, int resolution);
 
 	void Factory();
 	void Populize();
 
-	int Index(int X, int Z);
-	void Calculate_World_Size();
+	void Calculate_All_Chunk_Height();
 
-	int Allocate_Color(Generator Func);
+	void Integrate();
+
+	int Allocate_Color(Pattern* pattern);
 };
 
 #endif

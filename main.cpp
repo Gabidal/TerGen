@@ -1,6 +1,5 @@
 #include "UI/Args.h"
 #include "UI/Producer.h"
-#include "Node/Node.h"
 #include "Core/Core.h"
 #include "Node/Chunk.h"
 #include "Functions/Functions.h"
@@ -16,20 +15,26 @@ Core* core = nullptr;
 int main(int argc, const char* argv[]) {
 	//if no parameters are passed, give user help
 	if (argc == 1) {
-		cout << "[file name to output the point map]" << endl;
-		cout << "-out [file name to output the point map]" << endl;
-		cout << "-res [how much points shall there be?]" << endl;
+		cout << "Quick use:" << endl;
+		cout << "  [file name to output the point map]" << endl;
+		cout << "\nArguments:" << endl;
+		cout << "  -out [file name to output the point map]" << endl;
+		cout << "  -res [how much points shall there be?]" << endl;
+
+		return 1;
 	}
 
-	vector<Node*> Master;
+	vector<Chunk*> World;
 
 	CMD = new Args(argv, argc);
 
-	core = new Core(CMD->Resolution, {
-		FUNCTIONS::Parabola
-	});
+	core = new Core(10, CMD->Resolution);
+	core->Pattern_Functions = {
+		{FUNCTIONS::Parabola_Frequency, FUNCTIONS::Parabola}
+	};
+	core->Factory();
 
-	Master = core->Master;
+	World = core->Chunks;
 
-	Producer producer(Master);
+	Producer producer(World);
 }

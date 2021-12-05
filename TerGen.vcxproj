@@ -102,7 +102,6 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Node\Chunk.cpp" />
     <ClCompile Include="Node\Cube.cpp" />
-    <ClCompile Include="node\Node.cpp" />
     <ClCompile Include="ui\Args.cpp" />
     <ClCompile Include="UI\MC_Frame.cpp" />
     <ClCompile Include="ui\Producer.cpp" />
@@ -112,7 +111,7 @@
     <ClInclude Include="Functions\Functions.h" />
     <ClInclude Include="Node\Chunk.h" />
     <ClInclude Include="Node\Cube.h" />
-    <ClInclude Include="node\Node.h" />
+    <ClInclude Include="Node\Node.h" />
     <ClInclude Include="ui\Args.h" />
     <ClInclude Include="UI\MC_Frame.h" />
     <ClInclude Include="ui\Producer.h" />

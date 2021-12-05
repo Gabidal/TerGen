@@ -1,19 +1,35 @@
 #include "Chunk.h"
+#include "../Core/Core.h"
 
-Chunk::Chunk(Node* alpha)
-{
-	Alpha = alpha;
+extern Core* core;
+
+Chunk::Chunk() {
+	Max_Height = core->Resolution;
+	Nodes = new unsigned int[core->Resolution * core->Resolution * core->Resolution]{ 0 };
 }
 
-Chunk::Chunk(Node* alpha, int color)
+Pattern::Pattern(int color)
 {
-	Alpha = alpha;
+	Data = new Chunk();
 	Color = color;
 }
 
-Chunk::Chunk(Node* alpha, int color, vector<Node*> data)
+Pattern::Pattern()
 {
-	Alpha = alpha;
+	Data = new Chunk();
+	Color = core->Allocate_Color(this);
+}
+
+Pattern::Pattern(int color, Chunk* data)
+{
+	Data = data;
 	Color = color;
+	Data = data;
+}
+
+Pattern::Pattern(Chunk* data)
+{
+	Data = data;
+	Color = core->Allocate_Color(this);
 	Data = data;
 }

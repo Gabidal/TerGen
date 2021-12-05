@@ -12,16 +12,21 @@ using namespace std;
 extern Core* core;
 
 namespace FUNCTIONS {
-	//every function generates it's own team of points, that are sprinkled throughout the master
-	void Parabola(vector<Node*> Master, vector<Chunk*>& Cluster) {
-		//allocate a new color to represent this function
-		int Color = core->Allocate_Color(Parabola);
-
+	//for amount of response rate this function is given one chunk to asses.
+	//this function can only output one or more clusters into the Clusters list
+	char Parabola_Frequency = 255; // 100% response rate
+	Pattern* Parabola(Chunk* Chunk) {
 		//make a virtual space to calculate the inherite of the points
-		Chunk* Space = new Chunk(new Node(0, 0, 0), Color);
+		//use Node* as a vector to determine the influencing direction.
+		Pattern* Space = new Pattern();
 
-
+		//We can use the Master list of nodes, that represents the whole world.
+		//From it we can behaive differently based on what is already generated on the Master node list.
+		//for example if there is a cliff a house generator would generate a mountain cliff staris instead of a house.
+		
 	}
+
+
 }
 
 #endif

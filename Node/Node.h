@@ -1,18 +1,17 @@
-#ifndef _NODE_H_
-#define _NODE_H_
-
-#include <iostream>
-
-using namespace std;
+#ifndef __NODE_H__
+#define __NODE_H__
 
 class Node {
 public:
-	double X = 0;
-	double Z = 0;
-	double Y = 0;
+	double X;
+	double Y;
+	double Z;
 
-
-	Node(double x, double z, double y);
+	Node(double x, double y, double z) {
+		X = x;
+		Y = y;
+		Z = z;
+	}
 };
 
 #endif

@@ -1,5 +1,5 @@
-#include "../Node/Node.h"
 #include "MC_Frame.h"
+#include "../Node/Node.h"
 
 #include <iostream>
 #include <vector>
@@ -9,7 +9,7 @@
 using namespace std;
 
 class Producer {
-	vector<Node*> Input;
+	vector<Chunk*> Input;
 
 	vector<Node*> Output_Node;
 	vector<Cube*> Output_Cube;
@@ -17,5 +17,5 @@ class Producer {
 	void Factory();
 	void Write_Output_As_Obj();
 public:
-	Producer(vector<Node*> out);
+	Producer(vector<Chunk*> out);
 };

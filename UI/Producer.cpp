@@ -3,7 +3,7 @@
 
 extern Args* CMD;
 
-Producer::Producer(vector<Node*> out)
+Producer::Producer(vector<Chunk*> out)
 {
 	Input = out;
 
