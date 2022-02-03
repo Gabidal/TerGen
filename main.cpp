@@ -2,7 +2,7 @@
 #include "UI/Producer.h"
 #include "Core/Core.h"
 #include "Node/Chunk.h"
-#include "Functions/Functions.h"
+#include "Node/Pattern.h"
 
 #include <iostream>
 #include <vector>
@@ -28,13 +28,7 @@ int main(int argc, const char* argv[]) {
 
 	CMD = new Args(argv, argc);
 
-	core = new Core(10, CMD->Resolution);
-	core->Pattern_Functions = {
-		{FUNCTIONS::Parabola_Frequency, FUNCTIONS::Parabola}
-	};
-	core->Factory();
-
-	World = core->Chunks;
+	
 
 	Producer producer(World);
 }

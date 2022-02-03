@@ -3,14 +3,12 @@
 
 class Node {
 public:
-	double X;
-	double Y;
-	double Z;
+	float Y;
+	unsigned char Color;
 
-	Node(double x, double y, double z) {
-		X = x;
+	Node(float y = 0, char c = 0) {
 		Y = y;
-		Z = z;
+		Color = c;
 	}
 };
 

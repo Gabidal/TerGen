@@ -1,41 +1,59 @@
 #ifndef _CORE_H_
 #define _CORE_H_
 #include "../Node/Chunk.h"
+#include "../Node/Pattern.h"
+#include "../Node/Perlin_Noise.hpp"
 
 #include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 
-
-typedef Pattern* (*Pattern_Generator)(Chunk*);
-typedef void (*Behaviour_Generator)(vector<Chunk*>& Chunks, int X, int Y, int Z);
-
 class Core {
 public:
-	int Resolution;
-	int Chunk_Count;
+	int Resolution; //1x resolution == native resolution
+	int World_Size;
 
 	vector<Chunk*> Chunks;
+	vector<Pattern> Patterns;
 
-	vector<Pattern*> Patterns;
+	Core(int Res = 1, int W = 100) {
+		Resolution = Res;
+		World_Size = W;
 
-	vector<pair<char, Pattern_Generator>> Pattern_Functions;
+		Chunks.resize(World_Size * World_Size);
 
-	vector<Behaviour_Generator> Behaviour_Functions;
+		for (int X = 0; X < World_Size; X++) {
+			for (int Z = 0; Z < World_Size; Z++) {
+				Chunks[X, Z] = new Chunk();
+			}
+		}
+	}
 
-	vector<pair<int, Pattern*>> Colors;
+	unsigned char Allocate_Color() {
+		if (Patterns.size() == 0)
+			return 0;
+		return Patterns.back().Color + 1;
+	}
 
-	Core(int Chunk_Count, int resolution);
+	vector<Pattern*> Pack_Patterns() {
 
-	void Factory();
-	void Populize();
-
-	void Calculate_All_Chunk_Height();
-
-	void Integrate();
-
-	int Allocate_Color(Pattern* pattern);
+	}
 };
+
+namespace Smart_Counter {
+	map<int, siv::BasicPerlinNoise<float>*> Counters;
+
+	int Count(int X, int Z, int Range) {
+		siv::BasicPerlinNoise<float>* Counter = Counters[Range];
+		if (Counter == nullptr) {
+			Counters[Range] = new siv::BasicPerlinNoise<float>();
+			Counter = Counters[Range];
+		}
+
+		return (int)floor(Counter->noise2D(X, Z) * 100.0) % Range;
+	}
+}
 
 #endif
