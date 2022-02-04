@@ -3,12 +3,18 @@
 #include "../Node/Chunk.h"
 #include "../Node/Pattern.h"
 #include "../Node/Perlin_Noise.hpp"
+#include "Constants.h"
 
 #include <iostream>
 #include <vector>
 #include <map>
 
 using namespace std;
+
+namespace Smart_Counter {
+	extern map<int, siv::BasicPerlinNoise<float>*> Counters;
+	extern int Count(int X, int Z, int Range);
+}
 
 class Core {
 public:
@@ -18,22 +24,24 @@ public:
 	vector<Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
-	Core(int Res = 1, int W = 100) {
+	Core(int Res = 1, int W = 1) {
 		Resolution = Res;
 		World_Size = W;
 
 		Chunks.resize(World_Size * World_Size);
+	}
 
+	void Factory() {
 		for (int X = 0; X < World_Size; X++) {
 			for (int Z = 0; Z < World_Size; Z++) {
-				Chunks[X, Z] = new Chunk(Pack_Patterns(X, Z));
+				Chunks[(World_Size * X) + Z] = new Chunk(Pack_Patterns(X, Z));
 			}
 		}
 	}
 
 	unsigned char Allocate_Color() {
 		if (Patterns.size() == 0)
-			return 0;
+			return 1;
 		return Patterns.back().Color + 1;
 	}
 
@@ -50,27 +58,16 @@ public:
 		vector<Pattern*> Result;
 		Result.resize(Population);
 		
-		for (int i = 0; i < Patterns.size(); i++) {
-			Result[i] = &Patterns[i];
+		for (int i = 0; i < Population; i++) {
+			Result[i] = new Pattern(X, Z, Patterns[i]);
 		}
+
+		return Result;
+	}
+
+	Chunk& At(int x, int y) {
+		return *Chunks[(World_Size * x) + y];
 	}
 };
-
-
-namespace Smart_Counter {
-	// Save information of all other counters, for different ranges.
-	map<int, siv::BasicPerlinNoise<float>*> Counters;
-
-	//this is to keep the pattern population natural in paralell X & Z
-	int Count(int X, int Z, int Range) {
-		siv::BasicPerlinNoise<float>* Counter = Counters[Range];
-		if (Counter == nullptr) {
-			Counters[Range] = new siv::BasicPerlinNoise<float>();
-			Counter = Counters[Range];
-		}
-
-		return (int)floor(Counter->noise2D(X, Z) * 100.0) % Range;
-	}
-}
 
 #endif

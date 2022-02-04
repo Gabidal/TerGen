@@ -11,7 +11,7 @@ using namespace std;
 class Producer {
 	vector<Chunk*> Input;
 
-	vector<Node*> Output_Node;
+	vector<Vertex> Output_Node;
 	vector<Cube*> Output_Cube;
 
 	void Factory();

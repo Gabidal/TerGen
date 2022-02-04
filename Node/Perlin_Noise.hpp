@@ -25,7 +25,8 @@
 //
 //----------------------------------------------------------------------------------------
 
-# pragma once
+#ifndef _PERLIN_NOISE_HPP_
+#define _PERLIN_NOISE_HPP_
 # include <cstdint>
 # include <algorithm>
 # include <array>
@@ -657,3 +658,5 @@ namespace siv
 # undef SIVPERLIN_NODISCARD_CXX20
 # undef SIVPERLIN_CONCEPT_URBG
 # undef SIVPERLIN_CONCEPT_URBG_
+
+#endif

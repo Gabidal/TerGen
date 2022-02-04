@@ -4,6 +4,8 @@
 #include "Node/Chunk.h"
 #include "Node/Pattern.h"
 
+#include "Functions/Functions.h"
+
 #include <iostream>
 #include <vector>
 
@@ -28,7 +30,12 @@ int main(int argc, const char* argv[]) {
 
 	CMD = new Args(argv, argc);
 
+	core = new Core(1, 3);
+
+	//Init all functions
+	PERLIN::Init_Perlin_Noise();
 	
+	core->Factory();
 
 	Producer producer(World);
 }

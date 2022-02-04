@@ -101,6 +101,12 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -114,7 +120,9 @@
     <ClCompile Include="UI\Producer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Core\Constants.h" />
     <ClInclude Include="Core\Core.h" />
+    <ClInclude Include="Functions\Functions.h" />
     <ClInclude Include="Node\Pattern.h" />
     <ClInclude Include="Node\Chunk.h" />
     <ClInclude Include="Node\Cube.h" />
@@ -123,6 +131,9 @@
     <ClInclude Include="UI\Args.h" />
     <ClInclude Include="UI\MC_Frame.h" />
     <ClInclude Include="UI\Producer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.MD" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

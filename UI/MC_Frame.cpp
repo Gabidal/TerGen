@@ -5,40 +5,37 @@ extern Core* core;
 vector<char> MC_Frame::Transform_Chunks_To_Space()
 {
     vector<char> Result;
+    Result.resize(core->World_Size * core->World_Size * CHUNK_SIZE * CHUNK_SIZE * MAX_HEIGHT * core->Resolution);
 
-    for (int C_X = 0; C_X < core->Chunk_Count; C_X++) {
-        for (int C_Z = 0; C_Z < core->Chunk_Count; C_Z++)
-            for (int C_Y = 0; C_Y < core->Chunk_Count; C_Y++) {
-                Chunk* Current_Chunk = Input[(C_Y * core->Chunk_Count * core->Chunk_Count) + (C_Z * core->Chunk_Count) + C_X];
-                
-                Result.resize(Result.size() + core->Resolution * core->Resolution * core->Resolution);
+    for (int C_X = 0; C_X < core->World_Size; C_X++) {
+        for (int C_Z = 0; C_Z < core->World_Size; C_Z++) {
 
-                for (int N_X = 0; N_X < core->Resolution; N_X++) {
-                    for (int N_Z = 0; N_Z < core->Resolution; N_Z++) {
-                        for (int N_Y = 0; N_Y < core->Resolution; N_Y++) {
-                            char Color = 0;
-                            long Index = (N_Y * core->Resolution * core->Resolution) + (N_Z * core->Resolution) + N_X;
-                            if (N_Y <= Current_Chunk->Max_Height) {
-                                Color = Current_Chunk->Nodes[Index];
-                            }
-                            Result[Index] = Color;
-                        }
+            Chunk& chunk = core->At(C_X, C_Z);
+            int Chunk_Skipper = CHUNK_SIZE * CHUNK_SIZE * MAX_HEIGHT;
+            int Current_Index = (core->World_Size * C_X + C_Z) * Chunk_Skipper;
+            
+            for (int X = 0; X < CHUNK_SIZE; X++) {
+                for (int Z = 0; Z < CHUNK_SIZE; Z++) {
+                    int Node_Index = Current_Index + (MAX_HEIGHT * X) + (Z * CHUNK_SIZE * MAX_HEIGHT);
+                    //insert color output support here:
+                    for (int Y = 0; Y < chunk.At(X, Z).Y; Y++) {
+                        Result[Node_Index + Y] = chunk.At(X, Z).Color;
                     }
+
                 }
             }
+        }
     }
     
 
     return Result;
 }
 
-vector<Node*> MC_Frame::Transform_Vertex_To_Node(vector<Vertex> Output)
+Node* MC_Frame::Transform_Vertex_To_Node(vector<Vertex> Output)
 {
-    vector<Node*> Result;
+    Node* Result = new Node[CHUNK_SIZE * CHUNK_SIZE];
 
-    for (auto i : Output) {
-        Result.push_back(new Node(i.x, i.y, i.z));
-    }
+    
 
     return Result;
 }
@@ -62,16 +59,41 @@ MC_Frame::MC_Frame(vector<Chunk*> in)
 
     dualmc::DualMC<char> builder;
 
-    vector<Vertex> Vertices;
-    vector<Quad> Quads;
+    vector<Vertex> Result_Vertices;
+    vector<Quad> Result_Quads;
 
-    int Area = core->Chunk_Count * (core->Resolution * core->Resolution * core->Resolution);
+    int Area = CHUNK_SIZE * CHUNK_SIZE * MAX_HEIGHT;
 
-    int Side = cbrt(Area);
+    int Chunk_Index = 0;
 
-    builder.build(Space.data(), Side, Side, Side,
-        1, true, true, Vertices, Quads);
+    for (int X = 0; X < core->World_Size; X++) {
+        for (int Y = 0; Y < core->World_Size; Y++) {
+            vector<Vertex> Vertices;
+            vector<Quad> Quads;
 
-    Output_Node = Transform_Vertex_To_Node(Vertices);
-    Output_Cube = Transform_Quad_To_Cube(Quads);
+            builder.build(Space.data() + Chunk_Index * Area, MAX_HEIGHT, CHUNK_SIZE, CHUNK_SIZE,
+                1, true, true, Vertices, Quads);
+
+            for (auto& i : Quads) {
+                i.i0 += Result_Vertices.size();
+                i.i1 += Result_Vertices.size();
+                i.i2 += Result_Vertices.size();
+                i.i3 += Result_Vertices.size();
+            }
+
+            for (auto& i : Vertices) {
+                i.y += CHUNK_SIZE * X;
+                i.z += CHUNK_SIZE * Y;
+
+            }
+
+            Result_Vertices.insert(Result_Vertices.end(), Vertices.begin(), Vertices.end());
+            Result_Quads.insert(Result_Quads.end(), Quads.begin(), Quads.end());
+
+            Chunk_Index++;
+        }
+    }
+
+    Output_Node = Result_Vertices;
+    Output_Cube = Transform_Quad_To_Cube(Result_Quads);
 }

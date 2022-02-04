@@ -25,7 +25,7 @@ void Producer::Write_Output_As_Obj()
 	if (CMD->Output_Format != Formats::RAW)
 		return;
 
-	ofstream file(CMD->Output.c_str());
+	ofstream file(CMD->Output + ".obj");
 
     // open output file
     if (!file) {
@@ -35,7 +35,7 @@ void Producer::Write_Output_As_Obj()
 
     // write vertices
     for (auto const& v : Output_Node) {
-        file << "v " << v->X << ' ' << v->Y << ' ' << v->Z << '\n';
+        file << "v " << v.y << ' ' << -v.x << ' ' << v.z << '\n';
     }
 
     // write quad indices

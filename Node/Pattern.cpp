@@ -9,8 +9,17 @@ Pattern::Pattern(FUNCTION func) {
 	Color = core->Allocate_Color();
 }
 
-void Pattern::Calculate(Node* nodes) {
+Pattern::Pattern(int x, int z, Pattern& p)
+{
+	*this = p;
+	X = x;
+	Z = z;
+}
+
+void Pattern::Calculate(int x, int z, Node* nodes) {
 	Nodes = nodes;
+	X = x;
+	Z = z;
 
 	Function(this);
 }

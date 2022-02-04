@@ -5,24 +5,22 @@
 #include <vector>
 
 #include "Node.h"
-#include "Pattern.h"
+#include "Chunk.h"
+#include "../Core/Constants.h"
 
 using namespace std;
 
-constexpr int CHUNK_SIZE = 1000;
+class Pattern;
 
 class Chunk {
 public:
 	Node* Nodes;
 	vector<Pattern*> Patterns;
 
-	Chunk(vector<Pattern*> p) {
-		Nodes = new Node[CHUNK_SIZE];
-		Patterns = p;
+	Chunk(vector<Pattern*> p);
 
-		for (auto& P : Patterns) {
-			P->Calculate(Nodes);
-		}
+	Node& At(int X, int Z) {
+		return Nodes[(CHUNK_SIZE * X) + Z];
 	}
 };
 

@@ -6,8 +6,8 @@
 
 using namespace std;
 
-#include "Chunk.h"
 #include "Node.h"
+#include "../Core/Constants.h"
 
 class Pattern;
 typedef void (*FUNCTION)(Pattern*);
@@ -16,13 +16,21 @@ class Pattern {
 public:
 	unsigned char Color;  //Colors represent node ground types.
 	Node* Nodes; //Points back to the chunk.
+	int X;	//starting address X
+	int Z;	//starting address Y
 	FUNCTION Function; //modifier
 
 	//First in main we create these patterns, and later on
 	//we give them the target node list.
 	Pattern(FUNCTION func);
 
-	void Calculate(Node* nodes);
+	Pattern(int x, int y, Pattern& p);
+
+	void Calculate(int x, int z, Node* nodes);
+
+	Node& At(int X, int Z) {
+		return Nodes[(CHUNK_SIZE * X) + Z];
+	}
 };
 
 #endif
