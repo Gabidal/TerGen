@@ -16,6 +16,7 @@ class Producer {
 
 	void Factory();
 	void Write_Output_As_Obj();
+	void Write_Output_As_Raw();
 public:
 	Producer(vector<Chunk*> out);
 };

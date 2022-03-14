@@ -29,7 +29,7 @@ namespace PERLIN {
 				//Get the relative Node location
 				Node& n = p->At(X, Z);
 				//set node height
-				n.Y = abs(Perlin.noise2D(Real_X / 100.0, Real_Z / 100.0)) * (MAX_HEIGHT -1)+ 1;
+				n.Y = abs(Perlin.noise2D(Real_X / 10.0, Real_Z / 10.0)) * (MAX_HEIGHT -1)+ 1;
 				//set node indentifier type.
 				n.Color = Color;
 			}

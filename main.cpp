@@ -3,17 +3,21 @@
 #include "Core/Core.h"
 #include "Node/Chunk.h"
 #include "Node/Pattern.h"
+#include "Node/Node.h"
 
 #include "Functions/Functions.h"
 
 #include <iostream>
 #include <vector>
+#include <sstream>
+
 
 using namespace std;
 
 Args* CMD = nullptr;
 Core* core = nullptr;
 
+#ifndef LIB
 int main(int argc, const char* argv[]) {
 	//if no parameters are passed, give user help
 	if (argc == 1) {
@@ -28,9 +32,10 @@ int main(int argc, const char* argv[]) {
 
 	vector<Chunk*> World;
 
+	//chancge the const char* into char**
 	CMD = new Args(argv, argc);
 
-	core = new Core(1, 3);
+	core = new Core(1, 10);
 
 	//Init all functions
 	PERLIN::Init_Perlin_Noise();
@@ -38,4 +43,61 @@ int main(int argc, const char* argv[]) {
 	core->Factory();
 
 	Producer producer(World);
+}
+#endif
+vector<string> Split(const string& s, char delim) {
+	vector<string> result;
+	stringstream ss(s);
+	string item;
+
+	while (getline(ss, item, delim)) {
+		result.push_back(item);
+	}
+
+	return result;
+}
+
+vector<Node*> TerGen(string args) {
+	vector<Chunk*> World;
+
+	vector<const char*> Arguments;
+
+	vector<string> Medium = Split(args, ' ');
+
+	for (auto& i : Medium) {
+		Arguments.push_back(i.c_str());
+	}
+
+	CMD = new Args(Arguments.data(), Arguments.size());
+
+	core = new Core(CMD->Resolution, CMD->World_Size);
+
+	//Init all functions
+	PERLIN::Init_Perlin_Noise();
+
+	core->Factory();
+
+	vector<Node*> Output;
+
+	Output.resize(core->World_Size * core->World_Size * CHUNK_SIZE * CHUNK_SIZE);
+
+	for (int c_x = 0; c_x < core->World_Size; c_x++) {
+		for (int c_y = 0; c_y < core->World_Size; c_y++) {
+
+			Chunk* chunk = &core->At(c_x, c_y);
+
+			int Chunk_Index = core->World_Size * c_x + c_y;
+
+			for (int x = 0; x < CHUNK_SIZE; x++) {
+				for (int y = 0; y < CHUNK_SIZE; y++) {
+					int Node_index = CHUNK_SIZE * x + y;
+
+					Output[Chunk_Index + Node_index] = new Node(chunk->At(x, y));
+				}
+			}
+
+		}
+	}
+
+	return Output;
 }
