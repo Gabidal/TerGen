@@ -1,7 +1,7 @@
 #ifndef _FUNCTIONS_H_
 #define _FUNCTIONS_H_
 
-#include "../Node/Perlin_Noise.hpp"
+#include "../Node/Simplex.h"
 #include "../Node/Pattern.h"
 #include "../Node/Chunk.h"
 #include "../Core/Core.h"
@@ -15,7 +15,7 @@ extern Core* core;
 /// <param name="p"></param>
 namespace PERLIN {
 	//This is so that we dont need to create other perlin instanses
-	siv::BasicPerlinNoise<float> Perlin;
+	SimplexNoise* Perlin;
 	unsigned Color;
 
 	void Perlin_Noise(Pattern* p) {
@@ -29,7 +29,7 @@ namespace PERLIN {
 				//Get the relative Node location
 				Node& n = p->At(X, Z);
 				//set node height
-				n.Y = abs(Perlin.noise2D(Real_X / 10.0, Real_Z / 10.0)) * (MAX_HEIGHT -1)+ 1;
+				n.Y = abs(Perlin->noise(Real_X / 10.0, Real_Z / 10.0) * (MAX_HEIGHT -1)) + 1;
 				//set node indentifier type.
 				n.Color = Color;
 			}
@@ -44,8 +44,5 @@ namespace PERLIN {
 		core->Patterns.push_back(pattern);
 	}
 }
-
-
-
 
 #endif

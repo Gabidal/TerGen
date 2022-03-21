@@ -2,7 +2,7 @@
 #define _CORE_H_
 #include "../Node/Chunk.h"
 #include "../Node/Pattern.h"
-#include "../Node/Perlin_Noise.hpp"
+#include "../Node/Simplex.h"
 #include "Constants.h"
 
 #include <iostream>
@@ -12,7 +12,7 @@
 using namespace std;
 
 namespace Smart_Counter {
-	extern map<int, siv::BasicPerlinNoise<float>*> Counters;
+	extern map<int, SimplexNoise*> Counters;
 	extern int Count(int X, int Z, int Range);
 }
 
@@ -21,7 +21,7 @@ public:
 	int Resolution; //1x resolution == native resolution
 	int World_Size;
 
-	vector<Chunk*> Chunks;
+	vector<TerGen_Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
 	Core(int Res = 1, int W = 1) {
@@ -34,7 +34,7 @@ public:
 	void Factory() {
 		for (int X = 0; X < World_Size; X++) {
 			for (int Z = 0; Z < World_Size; Z++) {
-				Chunks[(World_Size * X) + Z] = new Chunk(Pack_Patterns(X, Z));
+				Chunks[(World_Size * X) + Z] = new TerGen_Chunk(Pack_Patterns(X, Z));
 			}
 		}
 	}
@@ -65,7 +65,7 @@ public:
 		return Result;
 	}
 
-	Chunk& At(int x, int y) {
+	TerGen_Chunk& At(int x, int y) {
 		return *Chunks[(World_Size * x) + y];
 	}
 };

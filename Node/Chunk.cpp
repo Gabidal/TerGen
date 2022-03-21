@@ -4,7 +4,7 @@
 
 extern Core* core;
 
-Chunk::Chunk(vector<Pattern*> p) {
+TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p) {
 	Nodes = new Node[CHUNK_SIZE * CHUNK_SIZE * core->Resolution];
 	Patterns = p;
 

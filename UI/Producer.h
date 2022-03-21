@@ -9,7 +9,7 @@
 using namespace std;
 
 class Producer {
-	vector<Chunk*> Input;
+	vector<TerGen_Chunk*> Input;
 
 	vector<Vertex> Output_Node;
 	vector<Cube*> Output_Cube;
@@ -18,5 +18,5 @@ class Producer {
 	void Write_Output_As_Obj();
 	void Write_Output_As_Raw();
 public:
-	Producer(vector<Chunk*> out);
+	Producer(vector<TerGen_Chunk*> out);
 };

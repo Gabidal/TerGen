@@ -12,12 +12,12 @@ using namespace std;
 
 class Pattern;
 
-class Chunk {
+class TerGen_Chunk {
 public:
 	Node* Nodes;
 	vector<Pattern*> Patterns;
 
-	Chunk(vector<Pattern*> p);
+	TerGen_Chunk(vector<Pattern*> p);
 
 	Node& At(int X, int Z) {
 		return Nodes[(CHUNK_SIZE * X) + Z];

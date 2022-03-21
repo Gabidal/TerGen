@@ -4,7 +4,7 @@
 extern Args* CMD;
 extern Core* core;
 
-Producer::Producer(vector<Chunk*> out)
+Producer::Producer(vector<TerGen_Chunk*> out)
 {
 	Input = out;
 
@@ -64,7 +64,7 @@ void Producer::Write_Output_As_Raw()
     for (int c_x = 0; c_x < core->World_Size; c_x++) {
         for (int c_y = 0; c_y < core->World_Size; c_y++) {
 
-            Chunk* chunk = &core->At(c_x, c_y);
+            TerGen_Chunk* chunk = &core->At(c_x, c_y);
 
             for (int x = 0; x < CHUNK_SIZE; x++) {
                 for (int y = 0; y < CHUNK_SIZE; y++) {

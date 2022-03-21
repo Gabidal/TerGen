@@ -10,7 +10,7 @@ vector<char> MC_Frame::Transform_Chunks_To_Space()
     for (int C_X = 0; C_X < core->World_Size; C_X++) {
         for (int C_Z = 0; C_Z < core->World_Size; C_Z++) {
 
-            Chunk& chunk = core->At(C_X, C_Z);
+            TerGen_Chunk& chunk = core->At(C_X, C_Z);
             int Chunk_Skipper = CHUNK_SIZE * CHUNK_SIZE * MAX_HEIGHT;
             int Current_Index = (core->World_Size * C_X + C_Z) * Chunk_Skipper;
             
@@ -51,7 +51,7 @@ vector<Cube*> MC_Frame::Transform_Quad_To_Cube(vector<Quad> Output)
     return Result;
 }
 
-MC_Frame::MC_Frame(vector<Chunk*> in)
+MC_Frame::MC_Frame(vector<TerGen_Chunk*> in)
 {
     Input = in;
 

@@ -10,7 +10,7 @@ using namespace dualmc;
 
 class MC_Frame {
 private:
-	vector<Chunk*> Input;
+	vector<TerGen_Chunk*> Input;
 
 	vector<char> Space;
 
@@ -21,5 +21,5 @@ public:
 	vector<Vertex> Output_Node;
 	vector<Cube*> Output_Cube;
 
-	MC_Frame(vector<Chunk*> In);
+	MC_Frame(vector<TerGen_Chunk*> In);
 };

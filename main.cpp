@@ -7,6 +7,8 @@
 
 #include "Functions/Functions.h"
 
+#include "Utils/Utils.h"
+
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -26,6 +28,7 @@ int main(int argc, const char* argv[]) {
 		cout << "\nArguments:" << endl;
 		cout << "  -out [file name to output the point map]" << endl;
 		cout << "  -res [how much points shall there be?]" << endl;
+		cout << "  -world_size [how many chunks there will be?]" << endl;
 
 		return 1;
 	}
@@ -45,6 +48,7 @@ int main(int argc, const char* argv[]) {
 	Producer producer(World);
 }
 #endif
+
 vector<string> Split(const string& s, char delim) {
 	vector<string> result;
 	stringstream ss(s);
@@ -57,8 +61,8 @@ vector<string> Split(const string& s, char delim) {
 	return result;
 }
 
-vector<Node*> TerGen(string args) {
-	vector<Chunk*> World;
+vector<Node*> TerGen(string args, vector<FUNCTION> functions) {
+	vector<TerGen_Chunk*> World;
 
 	vector<const char*> Arguments;
 
@@ -73,7 +77,11 @@ vector<Node*> TerGen(string args) {
 	core = new Core(CMD->Resolution, CMD->World_Size);
 
 	//Init all functions
-	PERLIN::Init_Perlin_Noise();
+	//PERLIN::Init_Perlin_Noise();
+
+	for (auto& i : functions) {
+		core->Patterns.push_back(Pattern(i));
+	}
 
 	core->Factory();
 
@@ -81,12 +89,16 @@ vector<Node*> TerGen(string args) {
 
 	Output.resize(core->World_Size * core->World_Size * CHUNK_SIZE * CHUNK_SIZE);
 
-	for (int c_x = 0; c_x < core->World_Size; c_x++) {
+	UTILS::For_All_Nodes([&Output](Node* node, int x, int y) {
+		Output[CHUNK_SIZE * x + y] = node;
+	});
+
+	/*for (int c_x = 0; c_x < core->World_Size; c_x++) {
 		for (int c_y = 0; c_y < core->World_Size; c_y++) {
 
 			Chunk* chunk = &core->At(c_x, c_y);
 
-			int Chunk_Index = core->World_Size * c_x + c_y;
+			int Chunk_Index = (core->World_Size * c_x + c_y) * CHUNK_SIZE * CHUNK_SIZE;
 
 			for (int x = 0; x < CHUNK_SIZE; x++) {
 				for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -97,7 +109,7 @@ vector<Node*> TerGen(string args) {
 			}
 
 		}
-	}
+	}*/
 
 	return Output;
 }
