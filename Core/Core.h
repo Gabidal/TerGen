@@ -65,8 +65,12 @@ public:
 		return Result;
 	}
 
+	void Integrate();
+
+	
+
 	TerGen_Chunk& At(int x, int y) {
-		return *Chunks[(World_Size * x) + y];
+		return *Chunks[World_Size * x + y];
 	}
 };
 

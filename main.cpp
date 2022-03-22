@@ -1,9 +1,9 @@
 #include "UI/Args.h"
 #include "UI/Producer.h"
 #include "Core/Core.h"
-#include "Node/Chunk.h"
 #include "Node/Pattern.h"
 #include "Node/Node.h"
+#include "Node/Chunk.h"
 
 #include "Functions/Functions.h"
 
@@ -85,31 +85,15 @@ vector<Node*> TerGen(string args, vector<FUNCTION> functions) {
 
 	core->Factory();
 
+	core->Integrate();
+
 	vector<Node*> Output;
 
 	Output.resize(core->World_Size * core->World_Size * CHUNK_SIZE * CHUNK_SIZE);
 
-	UTILS::For_All_Nodes([&Output](Node* node, int x, int y) {
-		Output[CHUNK_SIZE * x + y] = node;
+	UTILS::For_All_Nodes([&Output](Node* node, int x, int y, int Chunk_X, int Chunk_Y) {
+		Output[Chunk_X + Chunk_Y] = node;
 	});
-
-	/*for (int c_x = 0; c_x < core->World_Size; c_x++) {
-		for (int c_y = 0; c_y < core->World_Size; c_y++) {
-
-			Chunk* chunk = &core->At(c_x, c_y);
-
-			int Chunk_Index = (core->World_Size * c_x + c_y) * CHUNK_SIZE * CHUNK_SIZE;
-
-			for (int x = 0; x < CHUNK_SIZE; x++) {
-				for (int y = 0; y < CHUNK_SIZE; y++) {
-					int Node_index = CHUNK_SIZE * x + y;
-
-					Output[Chunk_Index + Node_index] = new Node(chunk->At(x, y));
-				}
-			}
-
-		}
-	}*/
 
 	return Output;
 }

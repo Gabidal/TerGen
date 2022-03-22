@@ -75,8 +75,8 @@ namespace UTILS
     extern TerGen_Chunk* Get_Chunk(TerGen_Chunk_Coordinates coordinates);
     extern TerGen_Chunk* Get_Chunk(TerGen_Node_Coordinates coordinates);
     extern Node* Get_Node(int x, int z);
-    extern void For_All_Nodes(std::vector<Node*> nodes, std::function<void(Node*, double, double)> lambda);
-    extern void For_All_Nodes(std::function<void(Node*, double, double)> lambda);
+    extern void For_All_Nodes(std::vector<Node*> nodes, std::function<void(Node*, double, double, double, double)> lambda);
+    extern void For_All_Nodes(std::function<void(Node*, double, double, double, double)> lambda);
 }
 
 #endif
