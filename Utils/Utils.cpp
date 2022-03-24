@@ -12,12 +12,12 @@ unsigned char UTILS::Get_Free_Color(){
 
 //NOTE: The given chunk will be destroyed after the TerGen core is shutdown.
 TerGen_Chunk* UTILS::Get_Chunk(TerGen_Chunk_Coordinates coordinates){
-    return &core->At(coordinates.X, coordinates.Z);
+    return core->At(coordinates.X, coordinates.Z);
 }
 
 //NOTE: The given chunk will be destroyed after the TerGen core is shutdown.
 TerGen_Chunk* UTILS::Get_Chunk(TerGen_Node_Coordinates coordinates){
-    return &core->At(coordinates.X / CHUNK_SIZE, coordinates.Z / CHUNK_SIZE);
+    return core->At(coordinates.X / CHUNK_SIZE, coordinates.Z / CHUNK_SIZE);
 }
 
 Node* UTILS::Get_Node(int x, int z) {
@@ -26,10 +26,10 @@ Node* UTILS::Get_Node(int x, int z) {
     int Chunk_Z = z / CHUNK_SIZE;
 
     //Then we get the chunk.
-    TerGen_Chunk* chunk = &core->At(Chunk_X, Chunk_Z);
+    TerGen_Chunk* chunk = core->At(Chunk_X, Chunk_Z);
 
     //Then we get the node.
-    return &chunk->At(x % CHUNK_SIZE, z % CHUNK_SIZE);
+    return chunk->At(x % CHUNK_SIZE, z % CHUNK_SIZE);
 }
 
 //This function goes through all the nodes in the world and starts the given lambda function.
@@ -61,7 +61,7 @@ void UTILS::For_All_Nodes(std::function<void(Node*, double, double, double, doub
 
 	for (int c_x = 0; c_x < core->World_Size; c_x++) {
 		for (int c_y = 0; c_y < core->World_Size; c_y++) {
-			TerGen_Chunk* chunk = &core->At(c_x, c_y);
+			TerGen_Chunk* chunk = core->At(c_x, c_y);
 
 			//int Chunk_Index = (core->World_Size * c_x + c_y) * CHUNK_SIZE * CHUNK_SIZE;
 
@@ -77,7 +77,7 @@ void UTILS::For_All_Nodes(std::function<void(Node*, double, double, double, doub
 
 					int Y = y + Chunk_Y;
 
-					lambda(&chunk->At(x, y), x, y, X, Y);
+					lambda(chunk->At(x, y), x, y, X, Y);
 				}
 			}
 		}

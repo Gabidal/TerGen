@@ -69,8 +69,8 @@ public:
 
 	
 
-	TerGen_Chunk& At(int x, int y) {
-		return *Chunks[World_Size * x + y];
+	TerGen_Chunk* At(int x, int y) {
+		return Chunks[World_Size * x + y];
 	}
 };
 

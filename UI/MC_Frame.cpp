@@ -10,7 +10,7 @@ vector<char> MC_Frame::Transform_Chunks_To_Space()
     for (int C_X = 0; C_X < core->World_Size; C_X++) {
         for (int C_Z = 0; C_Z < core->World_Size; C_Z++) {
 
-            TerGen_Chunk& chunk = core->At(C_X, C_Z);
+            TerGen_Chunk& chunk = *core->At(C_X, C_Z);
             int Chunk_Skipper = CHUNK_SIZE * CHUNK_SIZE * MAX_HEIGHT;
             int Current_Index = (core->World_Size * C_X + C_Z) * Chunk_Skipper;
             
@@ -18,8 +18,8 @@ vector<char> MC_Frame::Transform_Chunks_To_Space()
                 for (int Z = 0; Z < CHUNK_SIZE; Z++) {
                     int Node_Index = Current_Index + (MAX_HEIGHT * X) + (Z * CHUNK_SIZE * MAX_HEIGHT);
                     //insert color output support here:
-                    for (int Y = 0; Y < chunk.At(X, Z).Y; Y++) {
-                        Result[Node_Index + Y] = chunk.At(X, Z).Color;
+                    for (int Y = 0; Y < chunk.At(X, Z)->Y; Y++) {
+                        Result[Node_Index + Y] = chunk.At(X, Z)->Color;
                     }
 
                 }

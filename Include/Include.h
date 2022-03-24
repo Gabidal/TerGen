@@ -10,39 +10,57 @@ constexpr int MAX_HEIGHT = CHUNK_SIZE / 2;
 
 class Node {
 public:
-	float Y;
-	unsigned char Color;
+    float Y;
+    const unsigned char Color;
 
-	Node(float y = 0, char c = 0) {
-		Y = y;
-		Color = c;
-	}
+    /*Node(float y = 0, char c = 0) {
+        Y = y;
+        Color = c;
+    }*/
 };
 
 class Pattern;
 typedef void (*FUNCTION)(Pattern*);
 
+class Packet {
+public:
+    FUNCTION Function;
+    float Weight;
+
+    Packet(FUNCTION f, float w) {
+        Function = f;
+        Weight = w;
+    }
+};
+
 class Pattern {
 public:
-	unsigned char Color;  //Colors represent node ground types.
-	Node* Nodes; //Points back to the chunk.
-	int X;	//starting address X
-	int Z;	//starting address Y
-	FUNCTION Function; //modifier
+    unsigned char Color;  //Colors represent node ground types.
+    Node* Nodes; //Points back to the chunk.
+    int X;	//starting address X
+    int Z;	//starting address Y
+    FUNCTION Function; //modifier
+    float Weight = 0;
 
-	//First in main we create these patterns, and later on
-	//we give them the target node list.
-	Pattern(FUNCTION func);
+    //First in main we create these patterns, and later on
+    //we give them the target node list.
+    Pattern(FUNCTION func);
 
-	Pattern(int x, int y, Pattern& p);
+    Pattern(FUNCTION func, float weight);
 
-	void Calculate(int x, int z, Node* nodes);
+    Pattern(int x, int y, Pattern& p);
+
+    void Calculate(int x, int z, Node* nodes);
+
+    Node& At(int X, int Z) {
+        return Nodes[(CHUNK_SIZE * X) + Z];
+    }
 };
 
 //-res [how much points shall there be?]
 //Note the default chunk size is 16x16
 [[nodiscard]]
-extern std::vector<Node*> TerGen(std::string args, std::vector<FUNCTION> functions);
+extern std::vector<Node*> TerGen(std::string args, std::vector<Packet> Packets);
 
 class TerGen_Chunk;
 class Node;

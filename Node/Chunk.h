@@ -19,8 +19,12 @@ public:
 
 	TerGen_Chunk(vector<Pattern*> p);
 
-	Node& At(int X, int Z) {
-		return Nodes[CHUNK_SIZE * X + Z];
+	Node* At(int X, int Z) {
+
+		int Node_X = X % CHUNK_SIZE;
+		int Node_Z = Z % CHUNK_SIZE;
+
+		return &Nodes[CHUNK_SIZE * Node_X + Node_Z];
 	}
 };
 

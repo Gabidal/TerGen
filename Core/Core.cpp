@@ -31,11 +31,11 @@ void Core::Integrate()
 	//We will use chunk splitting. to fine control the color gradient.
 	for (int Chunk_X = 0; Chunk_X < World_Size; Chunk_X++) {
 		for (int Chunk_Y = 0; Chunk_Y < World_Size; Chunk_Y++) {
-			TerGen_Chunk* Center_Chunk = &At(Chunk_X, Chunk_Y);
+			TerGen_Chunk* Center_Chunk = At(Chunk_X, Chunk_Y);
 			//slice the center chunk into sub chunks
 			for (int Sub_Area_X = 0; Sub_Area_X < CHUNK_SIZE * CHUNK_SIZE; Sub_Area_X += Sub_Divider) {
 				for (int Sub_Area_Y = 0; Sub_Area_Y < CHUNK_SIZE * CHUNK_SIZE; Sub_Area_Y += Sub_Divider) {
-					vector<pair<float, vector<Pattern*>>> Distances;
+					vector<pair<float, vector<Pattern*>&>> Distances;
 
 					int Absolute_X = Sub_Area_X + Chunk_X * CHUNK_SIZE;
 					int Absolute_Y = Sub_Area_Y + Chunk_Y * CHUNK_SIZE;
@@ -52,7 +52,7 @@ void Core::Integrate()
 							Distances.push_back({
 								((Absolute_X - Surround_Center_X) * (Absolute_X - Surround_Center_X)) +
 								((Absolute_Y - Surround_Center_Y) * (Absolute_Y - Surround_Center_Y)),
-								At(Surround_X, Surround_Y).Patterns
+								At(Surround_X, Surround_Y)->Patterns
 							});
 						}
 					}
@@ -88,8 +88,17 @@ void Core::Integrate()
 								Current_Sum += Probabilities[i];
 							}
 
-							if (Hit != -1 && Distances[Hit].second.size() > 0)
-								Center_Chunk->At(Node_X, Node_Y).Color = Distances[Hit].second[0]->Color;
+							if (Hit != -1 && Distances[Hit].second.size() > 0) {
+								int Closest_Pattern_Index = 0;
+
+								for (int i = 0; i < Distances[Hit].second.size(); i++) {
+									if (abs(Distances[Hit].second[i]->Weight - r) < abs(Distances[Hit].second[Closest_Pattern_Index]->Weight - r)) {
+										Closest_Pattern_Index = i;
+									}
+								}
+
+								Center_Chunk->At(Node_X, Node_Y)->Color = Distances[Hit].second[Closest_Pattern_Index]->Color;
+							}
 						}
 					}
 				}

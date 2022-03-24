@@ -12,6 +12,17 @@ using namespace std;
 class Pattern;
 typedef void (*FUNCTION)(Pattern*);
 
+class Packet {
+public:
+	FUNCTION Function;
+	float Weight;
+
+	Packet(FUNCTION f, float w) {
+		Function = f;
+		Weight = w;
+	}
+};
+
 class Pattern {
 public:
 	unsigned char Color;  //Colors represent node ground types.
@@ -19,10 +30,13 @@ public:
 	int X;	//starting address X
 	int Z;	//starting address Y
 	FUNCTION Function; //modifier
+	float Weight = 0;
 
 	//First in main we create these patterns, and later on
 	//we give them the target node list.
 	Pattern(FUNCTION func);
+
+	Pattern(FUNCTION func, float weight);
 
 	Pattern(int x, int y, Pattern& p);
 

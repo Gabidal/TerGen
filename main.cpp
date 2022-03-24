@@ -13,7 +13,6 @@
 #include <vector>
 #include <sstream>
 
-
 using namespace std;
 
 Args* CMD = nullptr;
@@ -33,17 +32,24 @@ int main(int argc, const char* argv[]) {
 		return 1;
 	}
 
-	vector<Chunk*> World;
+	vector<TerGen_Chunk*> World;
 
-	//chancge the const char* into char**
+	////chancge the const char* into char**
 	CMD = new Args(argv, argc);
 
-	core = new Core(1, 10);
+	core = new Core(CMD->Resolution, CMD->World_Size);
 
-	//Init all functions
-	PERLIN::Init_Perlin_Noise();
-	
+	vector<FUNCTION> functions = {
+		Foo
+	};
+
+	for (auto& i : functions) {
+		core->Patterns.push_back(Pattern(i));
+	}
+
 	core->Factory();
+
+	core->Integrate();
 
 	Producer producer(World);
 }
@@ -61,7 +67,7 @@ vector<string> Split(const string& s, char delim) {
 	return result;
 }
 
-vector<Node*> TerGen(string args, vector<FUNCTION> functions) {
+vector<Node*> TerGen(string args, vector<Packet> Packets) {
 	vector<TerGen_Chunk*> World;
 
 	vector<const char*> Arguments;
@@ -79,8 +85,8 @@ vector<Node*> TerGen(string args, vector<FUNCTION> functions) {
 	//Init all functions
 	//PERLIN::Init_Perlin_Noise();
 
-	for (auto& i : functions) {
-		core->Patterns.push_back(Pattern(i));
+	for (auto& i : Packets) {
+		core->Patterns.push_back(Pattern(i.Function, i.Weight));
 	}
 
 	core->Factory();

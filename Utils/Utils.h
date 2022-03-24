@@ -3,6 +3,10 @@
 
 #include <functional>
 
+#include <vector>
+
+using namespace std;
+
 class TerGen_Chunk;
 class Node;
 
