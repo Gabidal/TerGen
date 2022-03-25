@@ -3,6 +3,8 @@
 
 #include <functional>
 
+#include "../Node/Pattern.h"
+
 #include <vector>
 
 using namespace std;
@@ -41,6 +43,8 @@ namespace UTILS
     extern void For_All_Nodes(std::vector<Node*> nodes, std::function<void(Node*, double, double, double, double)> lambda);
     extern void For_All_Nodes(std::function<void(Node*, double, double, double, double)> lambda);
     extern unsigned long Rand();
+    extern unsigned char Get_Color(FUNCTION func);
+    extern FUNCTION Get_Function(unsigned char color);
 }
 
 

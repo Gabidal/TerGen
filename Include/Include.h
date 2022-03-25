@@ -52,9 +52,9 @@ public:
 
     void Calculate(int x, int z, Node* nodes);
 
-    Node& At(int X, int Z) {
+    /*Node& At(int X, int Z) {
         return Nodes[(CHUNK_SIZE * X) + Z];
-    }
+    }*/
 };
 
 //-res [how much points shall there be?]
@@ -95,6 +95,9 @@ namespace UTILS
     extern Node* Get_Node(int x, int z);
     extern void For_All_Nodes(std::vector<Node*> nodes, std::function<void(Node*, double, double, double, double)> lambda);
     extern void For_All_Nodes(std::function<void(Node*, double, double, double, double)> lambda);
+
+    extern unsigned char Get_Color(FUNCTION func);
+    extern FUNCTION Get_Function(unsigned char color);
 }
 
 #endif

@@ -56,18 +56,24 @@ public:
 		int Population = Smart_Counter::Count(X, Z, Range);
 
 		vector<Pattern*> Result;
-		Result.resize(Population);
-		
-		for (int i = 0; i < Population; i++) {
-			Result[i] = new Pattern(X, Z, Patterns[i]);
+
+		int i = 0;
+		while (i < Patterns.size() && i < Population) {
+
+			if (Patterns[i].Weight == 0)
+				i++;
+
+			if (rand() / (float)RAND_MAX < Patterns[i].Weight) {
+				Result.push_back(new Pattern(X, Z, Patterns[i]));
+				i++;
+			}
+
 		}
 
 		return Result;
 	}
 
 	void Integrate();
-
-	
 
 	TerGen_Chunk* At(int x, int y) {
 		return Chunks[World_Size * x + y];

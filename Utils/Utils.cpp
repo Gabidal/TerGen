@@ -99,3 +99,22 @@ unsigned long UTILS::Rand() {          //period 2^96-1
 
 	return z;
 }
+
+unsigned char UTILS::Get_Color(FUNCTION func)
+{
+	for (auto i : core->Patterns) {
+		if (i.Function == func)
+			return i.Color;
+	}
+
+	return -1;
+}
+
+FUNCTION UTILS::Get_Function(unsigned char color) {
+	for (auto i : core->Patterns) {
+		if (i.Color == color)
+			return i.Function;
+	}
+
+	return nullptr;
+}

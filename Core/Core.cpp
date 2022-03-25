@@ -32,6 +32,10 @@ void Core::Integrate()
 	for (int Chunk_X = 0; Chunk_X < World_Size; Chunk_X++) {
 		for (int Chunk_Y = 0; Chunk_Y < World_Size; Chunk_Y++) {
 			TerGen_Chunk* Center_Chunk = At(Chunk_X, Chunk_Y);
+
+			if (Center_Chunk->Patterns.size() > 0)
+				continue;
+
 			//slice the center chunk into sub chunks
 			for (int Sub_Area_X = 0; Sub_Area_X < CHUNK_SIZE * CHUNK_SIZE; Sub_Area_X += Sub_Divider) {
 				for (int Sub_Area_Y = 0; Sub_Area_Y < CHUNK_SIZE * CHUNK_SIZE; Sub_Area_Y += Sub_Divider) {
@@ -88,17 +92,19 @@ void Core::Integrate()
 								Current_Sum += Probabilities[i];
 							}
 
-							if (Hit != -1 && Distances[Hit].second.size() > 0) {
-								int Closest_Pattern_Index = 0;
+							if (Hit == -1 || Distances[Hit].second.size() == 0)
+								continue;
 
-								for (int i = 0; i < Distances[Hit].second.size(); i++) {
-									if (abs(Distances[Hit].second[i]->Weight - r) < abs(Distances[Hit].second[Closest_Pattern_Index]->Weight - r)) {
-										Closest_Pattern_Index = i;
-									}
+							int Closest_Pattern_Index = 0;
+
+							for (int i = 0; i < Distances[Hit].second.size(); i++) {
+								if (abs(Distances[Hit].second[i]->Weight - r) < abs(Distances[Hit].second[Closest_Pattern_Index]->Weight - r)) {
+									Closest_Pattern_Index = i;
 								}
-
-								Center_Chunk->At(Node_X, Node_Y)->Color = Distances[Hit].second[Closest_Pattern_Index]->Color;
 							}
+
+							Center_Chunk->At(Node_X, Node_Y)->Color = Distances[Hit].second[Closest_Pattern_Index]->Color;
+
 						}
 					}
 				}
