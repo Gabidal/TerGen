@@ -7,7 +7,7 @@
 #include "../Core/Core.h"
 #include "../Core/Constants.h"
 
-extern Core* core;
+extern TerGen_Core* core;
 
 /// <summary>
 /// Pattern inlists all the right informations for the calculations.
@@ -18,9 +18,11 @@ namespace PERLIN {
 	SimplexNoise* Perlin;
 	unsigned Color;
 
-	void Perlin_Noise(Pattern* p) {
-		for (int X = 0; X < CHUNK_SIZE; X++) {
-			for (int Z = 0; Z < CHUNK_SIZE; Z++) {
+	unsigned char Perlin_Noise(Pattern* p, int Amount) {
+		unsigned char Result = 0;
+
+		for (int X = 0; X < Amount; X++) {
+			for (int Z = 0; Z < Amount; Z++) {
 
 				//we need to create the real X & Y coordinates based on the chunk X & Y
 				int Real_X = X + p->X * CHUNK_SIZE;
@@ -32,8 +34,12 @@ namespace PERLIN {
 				n.Y = abs(Perlin->noise(Real_X / 10.0, Real_Z / 10.0) * (MAX_HEIGHT -1)) + 1;
 				//set node indentifier type.
 				n.Color = Color;
+
+				Result = Color;
 			}
 		}
+
+		return Result;
 	}
 
 	void Init_Perlin_Noise() {

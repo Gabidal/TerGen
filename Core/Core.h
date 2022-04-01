@@ -16,7 +16,7 @@ namespace Smart_Counter {
 	extern int Count(int X, int Z, int Range);
 }
 
-class Core {
+class TerGen_Core {
 public:
 	int Resolution; //1x resolution == native resolution
 	int World_Size;
@@ -24,7 +24,7 @@ public:
 	vector<TerGen_Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
-	Core(int Res = 1, int W = 1) {
+	TerGen_Core(int Res = 1, int W = 1) {
 		Resolution = Res;
 		World_Size = W;
 

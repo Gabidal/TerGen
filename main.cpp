@@ -16,7 +16,7 @@
 using namespace std;
 
 Args* CMD = nullptr;
-Core* core = nullptr;
+TerGen_Core* core = nullptr;
 
 #ifndef LIB
 int main(int argc, const char* argv[]) {
@@ -80,7 +80,7 @@ vector<Node*> TerGen(string args, vector<Packet> Packets) {
 
 	CMD = new Args(Arguments.data(), Arguments.size());
 
-	core = new Core(CMD->Resolution, CMD->World_Size);
+	core = new TerGen_Core(CMD->Resolution, CMD->World_Size);
 
 	//Init all functions
 	//PERLIN::Init_Perlin_Noise();

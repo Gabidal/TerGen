@@ -20,7 +20,7 @@ public:
 };
 
 class Pattern;
-typedef void (*FUNCTION)(Pattern*);
+typedef unsigned char (*FUNCTION)(Pattern*, int Amount);
 
 class Packet {
 public:

@@ -1,7 +1,7 @@
 #include "Pattern.h"
 #include "../Core/Core.h"
 
-extern Core* core;
+extern TerGen_Core* core;
 
 Pattern::Pattern(FUNCTION func) {
 	Function = func;
@@ -28,5 +28,5 @@ void Pattern::Calculate(int x, int z, Node* nodes) {
 	X = x;
 	Z = z;
 
-	Function(this);
+	Function(this, CHUNK_SIZE);
 }

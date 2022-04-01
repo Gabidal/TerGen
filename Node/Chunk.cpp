@@ -2,7 +2,7 @@
 #include "../Core/Core.h"
 #include "Pattern.h"
 
-extern Core* core;
+extern TerGen_Core* core;
 
 TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p) {
 	Nodes = new Node[CHUNK_SIZE * CHUNK_SIZE * core->Resolution];

@@ -2,7 +2,7 @@
 #include "Args.h"
 
 extern Args* CMD;
-extern Core* core;
+extern TerGen_Core* core;
 
 Producer::Producer(vector<TerGen_Chunk*> out)
 {

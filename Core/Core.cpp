@@ -17,7 +17,7 @@ int Smart_Counter::Count(int X, int Z, int Range) {
 }
 
 //This function will integrate different chunks together for more cohisive terrain generation
-void Core::Integrate()
+void TerGen_Core::Integrate()
 {
 	//First cohisive terrain step is to make a gradient chunk coloring.
 	//So if we have a chunk  surrounded with different chunks we want this middle chunk to have the right flowing gradient with its surrounding chunks.
@@ -103,7 +103,16 @@ void Core::Integrate()
 								}
 							}
 
-							Center_Chunk->At(Node_X, Node_Y)->Color = Distances[Hit].second[Closest_Pattern_Index]->Color;
+							Node tmp;
+
+							Pattern pattern = *Distances[Hit].second[Closest_Pattern_Index];
+							pattern.X = Node_X;
+							pattern.Z = Node_Y;
+							pattern.Nodes = &tmp;
+
+							unsigned Color = pattern.Function(&pattern, 1);
+
+							Center_Chunk->At(Node_X, Node_Y)->Color = Color;
 
 						}
 					}

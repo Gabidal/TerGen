@@ -1,6 +1,6 @@
 #include "MC_Frame.h"
 
-extern Core* core;
+extern TerGen_Core* core;
 
 vector<char> MC_Frame::Transform_Chunks_To_Space()
 {

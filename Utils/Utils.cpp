@@ -4,7 +4,7 @@
 #include "../Node/Node.h"
 #include "../Node/Chunk.h"
 
-extern Core* core;
+extern TerGen_Core* core;
 
 unsigned char UTILS::Get_Free_Color(){
     return core->Allocate_Color();
