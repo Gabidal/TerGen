@@ -10,7 +10,7 @@ using namespace std;
 #include "../Core/Constants.h"
 
 class Pattern;
-typedef unsigned char (*FUNCTION)(Pattern*, int Amount);
+typedef unsigned char (*FUNCTION)(Pattern*, int Amount, Node* node);
 
 class Packet {
 public:

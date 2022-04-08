@@ -42,13 +42,13 @@ namespace PERLIN {
 		return Result;
 	}
 
-	void Init_Perlin_Noise() {
-		Color = core->Allocate_Color();
+	//void Init_Perlin_Noise() {
+	//	Color = core->Allocate_Color();
 
-		Pattern pattern(Perlin_Noise);
+	//	//Pattern pattern(Perlin_Noise, 0);
 
-		core->Patterns.push_back(pattern);
-	}
+	//	core->Patterns.push_back(pattern);
+	//}
 }
 
 #endif

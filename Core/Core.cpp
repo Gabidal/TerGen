@@ -110,9 +110,11 @@ void TerGen_Core::Integrate()
 							pattern.Z = Node_Y;
 							pattern.Nodes = &tmp;
 
-							unsigned Color = pattern.Function(&pattern, 1);
+							Node* Target = Center_Chunk->At(Node_X, Node_Y);
 
-							Center_Chunk->At(Node_X, Node_Y)->Color = Color;
+							unsigned Color = pattern.Function(&pattern, 1, Target);
+
+							Target->Color = Color;
 
 						}
 					}

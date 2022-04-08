@@ -28,5 +28,5 @@ void Pattern::Calculate(int x, int z, Node* nodes) {
 	X = x;
 	Z = z;
 
-	Function(this, CHUNK_SIZE);
+	Function(this, CHUNK_SIZE, nullptr);
 }

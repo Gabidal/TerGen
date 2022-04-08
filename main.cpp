@@ -90,9 +90,6 @@ vector<Node*> TerGen(
 
 	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, CMD->Resolution, CMD->World_Size);
 
-	//Init all functions
-	//PERLIN::Init_Perlin_Noise();
-
 	for (auto& i : Packets) {
 		core->Patterns.push_back(Pattern(i.Function, i.Weight));
 	}
