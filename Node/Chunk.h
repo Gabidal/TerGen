@@ -7,6 +7,7 @@
 #include "Node.h"
 #include "Chunk.h"
 #include "../Core/Constants.h"
+#include "Simplex.h"
 
 using namespace std;
 
@@ -14,10 +15,11 @@ class Pattern;
 
 class TerGen_Chunk {
 public:
+	//The generated map part.
 	Node* Nodes;
 	vector<Pattern*> Patterns;
 
-	TerGen_Chunk(vector<Pattern*> p);
+	TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNoise* Moist, SimplexNoise* Temp, int X, int Z);
 
 	Node* At(int X, int Z) {
 

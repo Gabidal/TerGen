@@ -11,12 +11,16 @@ constexpr int MAX_HEIGHT = CHUNK_SIZE / 2;
 class Node {
 public:
     float Y;
-    const unsigned char Color;
+    unsigned char Color;
+    short Moisture;
+    short Tempature;
 
-    /*Node(float y = 0, char c = 0) {
+    Node(float y = 0, unsigned char c = 0, short moisture = 0, short tempature = 0) {
         Y = y;
         Color = c;
-    }*/
+        Moisture = moisture;
+        Tempature = tempature;
+    }
 };
 
 class Pattern;
@@ -60,7 +64,14 @@ public:
 //-res [how much points shall there be?]
 //Note the default chunk size is 16x16
 [[nodiscard]]
-extern std::vector<Node*> TerGen(std::string args, std::vector<Packet> Packets);
+extern std::vector<Node*> TerGen(
+    std::string args,
+    std::vector<Packet> Packets,
+    float Frequenzy = 1,
+    float Amplitude = 1,
+    float Lacuranity = 2,
+    float Persictent = 0.5
+);
 
 class TerGen_Chunk;
 class Node;

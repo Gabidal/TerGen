@@ -67,7 +67,15 @@ vector<string> Split(const string& s, char delim) {
 	return result;
 }
 
-vector<Node*> TerGen(string args, vector<Packet> Packets) {
+vector<Node*> TerGen(
+	string args, 
+	vector<Packet> Packets,
+	float Frequenzy,
+	float Amplitude,
+	float Lacuranity,
+	float Persictent
+) {
+	
 	vector<TerGen_Chunk*> World;
 
 	vector<const char*> Arguments;
@@ -80,7 +88,7 @@ vector<Node*> TerGen(string args, vector<Packet> Packets) {
 
 	CMD = new Args(Arguments.data(), Arguments.size());
 
-	core = new TerGen_Core(CMD->Resolution, CMD->World_Size);
+	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, CMD->Resolution, CMD->World_Size);
 
 	//Init all functions
 	//PERLIN::Init_Perlin_Noise();

@@ -21,20 +21,34 @@ public:
 	int Resolution; //1x resolution == native resolution
 	int World_Size;
 
+	SimplexNoise* Ground_Noise_Generator;
+	SimplexNoise* Moisture_Generator;
+	SimplexNoise* Tempature_Generator;
+
 	vector<TerGen_Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
-	TerGen_Core(int Res = 1, int W = 1) {
+	TerGen_Core(float freq, float amp, float lac, float per, int Res = 1, int W = 1) {
 		Resolution = Res;
 		World_Size = W;
 
 		Chunks.resize(World_Size * World_Size);
+
+		Ground_Noise_Generator = new SimplexNoise(freq, amp, lac, per);
+		Moisture_Generator = new SimplexNoise(freq, amp, lac, per);
+		Tempature_Generator = new SimplexNoise(freq, amp, lac, per);
 	}
 
 	void Factory() {
 		for (int X = 0; X < World_Size; X++) {
 			for (int Z = 0; Z < World_Size; Z++) {
-				Chunks[(World_Size * X) + Z] = new TerGen_Chunk(Pack_Patterns(X, Z));
+				Chunks[(World_Size * X) + Z] = new TerGen_Chunk(
+					Pack_Patterns(X, Z),
+					Ground_Noise_Generator,
+					Moisture_Generator,
+					Tempature_Generator,
+					X, Z
+				);
 			}
 		}
 	}
