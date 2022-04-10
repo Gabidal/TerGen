@@ -32,17 +32,31 @@ public:
         X = x;
         Z = z;
     }
+
+    bool operator==(TerGen_Node_Coordinates other) {
+        if (other.X == X && other.Z == Z) {
+            return true;
+        }
+        return false;
+    }
 };
 
 namespace UTILS
 {
+    using namespace std;
+
     extern unsigned char Get_Free_Color();
     extern TerGen_Chunk* Get_Chunk(TerGen_Chunk_Coordinates coordinates);
     extern TerGen_Chunk* Get_Chunk(TerGen_Node_Coordinates coordinates);
     extern Node* Get_Node(int x, int z);
-    extern void For_All_Nodes(std::vector<Node*> nodes, std::function<void(Node*, double, double, double, double)> lambda);
-    extern void For_All_Nodes(std::function<void(Node*, double, double, double, double)> lambda);
+    extern void For_All_Nodes(vector<Node*> nodes, function<void(Node*, double, double, double, double)> lambda);
+    extern void For_All_Nodes(function<void(Node*, double, double, double, double)> lambda);
+
+
     extern unsigned long Rand();
+
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget);
+
     extern unsigned char Get_Color(FUNCTION func);
     extern FUNCTION Get_Function(unsigned char color);
 }

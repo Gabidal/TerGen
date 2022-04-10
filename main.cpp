@@ -73,7 +73,8 @@ vector<Node*> TerGen(
 	float Frequenzy,
 	float Amplitude,
 	float Lacuranity,
-	float Persictent
+	float Persictent,
+	float Seed
 ) {
 	
 	vector<TerGen_Chunk*> World;
@@ -88,7 +89,7 @@ vector<Node*> TerGen(
 
 	CMD = new Args(Arguments.data(), Arguments.size());
 
-	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, CMD->Resolution, CMD->World_Size);
+	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, Seed, CMD->Resolution, CMD->World_Size);
 
 	for (auto& i : Packets) {
 		core->Patterns.push_back(Pattern(i.Function, i.Weight));

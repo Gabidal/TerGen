@@ -39,11 +39,13 @@ public:
     explicit SimplexNoise(float frequency = 1.0f,
         float amplitude = 1.0f,
         float lacunarity = 2.0f,
-        float persistence = 0.5f) :
+        float persistence = 0.5f,
+        float seed = 0) :
         mFrequency(frequency),
         mAmplitude(amplitude),
         mLacunarity(lacunarity),
-        mPersistence(persistence) {
+        mPersistence(persistence), 
+        Seed(seed) {
     }
 
 private:
@@ -52,4 +54,6 @@ private:
     float mAmplitude;   ///< Amplitude ("height") of the first octave of noise (default to 1.0)
     float mLacunarity;  ///< Lacunarity specifies the frequency multiplier between successive octaves (default to 2.0).
     float mPersistence; ///< Persistence is the loss of amplitude between successive octaves (usually 1/lacunarity)
+    float Seed;
+
 };

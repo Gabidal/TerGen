@@ -28,15 +28,15 @@ public:
 	vector<TerGen_Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
-	TerGen_Core(float freq, float amp, float lac, float per, int Res = 1, int W = 1) {
+	TerGen_Core(float freq, float amp, float lac, float per, float sed, int Res = 1, int W = 1) {
 		Resolution = Res;
 		World_Size = W;
 
 		Chunks.resize(World_Size * World_Size);
 
-		Ground_Noise_Generator = new SimplexNoise(freq, amp, lac, per);
-		Moisture_Generator = new SimplexNoise(freq, amp, lac, per);
-		Tempature_Generator = new SimplexNoise(freq, amp, lac, per);
+		Ground_Noise_Generator = new SimplexNoise(freq, amp, lac, per, sed);
+		Moisture_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed);
+		Tempature_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed * sed);
 	}
 
 	void Factory() {
