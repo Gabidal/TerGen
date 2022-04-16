@@ -123,3 +123,80 @@ void TerGen_Core::Integrate()
 		}
 	}
 }
+
+void TerGen_Core::Corrode() {
+	vector<pair<TerGen_Chunk*, TerGen_Chunk_Coordinates>> Most_Moist_Chunks;
+	vector<pair<TerGen_Chunk*, TerGen_Chunk_Coordinates>> Least_Moist_Chunks;
+
+	short Min_Moisture = SHRT_MAX;
+	short Max_Moisture = 0;
+
+	short Moisture_Threshold = SHRT_MAX / 10;
+
+	vector<Node*> Liquid_Buffer;
+
+	Liquid_Buffer.resize(World_Size * World_Size * CHUNK_SIZE * CHUNK_SIZE);
+
+	UTILS::For_All_Nodes([&Liquid_Buffer](Node* node, int x, int y, int Chunk_X, int Chunk_Y) {
+		Liquid_Buffer[Chunk_X + Chunk_Y] = node;
+	});
+
+	//draw A points to most moist chunks,  and B points into least moist chunks.
+
+	//Calculate the most extreme points
+	for (auto i : Chunks) {
+		if (i->Max_Moisture > Max_Moisture)
+			Max_Moisture = i->Max_Moisture;
+
+		if (i->Max_Moisture < Min_Moisture)
+			Min_Moisture = i->Max_Moisture;
+	}
+
+	//sort the chunks that are close enough to the extreme points.
+	for (int x = 0; x < World_Size; x++) {
+		for (int z = 0; z < World_Size; z++) {
+			TerGen_Chunk* chunk = At(x, z);
+
+			if (abs(chunk->Max_Moisture - Max_Moisture) <= Moisture_Threshold)
+				Most_Moist_Chunks.push_back({ chunk, {x, z} });
+			if (abs(chunk->Max_Moisture - Min_Moisture) <= Moisture_Threshold)
+				Least_Moist_Chunks.push_back({ chunk, {x, z} });
+		}
+	}
+
+	vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Paths;
+
+	//combine every single Most_Moist_Chunks with all the Least_Moist_Chunks.
+	for (auto Most : Most_Moist_Chunks) {
+
+		vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Tmp_Paths;
+
+		TerGen_Node_Coordinates A = At(Most.second.X, Most.second.Z)->Highest_Point.second;
+		A.X += CHUNK_SIZE * Most.second.X;
+		A.Z += CHUNK_SIZE * Most.second.Z;
+
+		for (auto Least : Least_Moist_Chunks) {
+
+			TerGen_Node_Coordinates B = At(Least.second.X, Least.second.Z)->Highest_Point.second;
+			B.X += CHUNK_SIZE * Least.second.X;
+			B.Z += CHUNK_SIZE * Least.second.Z;
+
+			UTILS::Append(Tmp_Paths, UTILS::Path_Find(Liquid_Buffer, A, B, INT32_MAX, World_Size * CHUNK_SIZE));
+
+
+		}
+
+		UTILS::Append(Paths, Tmp_Paths);
+
+	}
+
+	for (auto& p : Paths) {
+		Node* node = At({ p.first.X, p.first.Z })->At(p.first.X, p.first.Z);
+
+		//node->Y -= 1;
+		node->Color = 4;
+	}
+}
+
+
+

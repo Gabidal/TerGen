@@ -9,6 +9,8 @@
 #include "../Core/Constants.h"
 #include "Simplex.h"
 
+#include "../Utils/Utils.h"
+
 using namespace std;
 
 class Pattern;
@@ -19,6 +21,12 @@ public:
 	Node* Nodes;
 	vector<Pattern*> Patterns;
 
+	short Max_Tempature = 0;
+	short Max_Moisture = 0;
+
+	pair<float, TerGen_Node_Coordinates> Highest_Point = { INT32_MIN, {0, 0} };
+	pair<float, TerGen_Node_Coordinates> Lowest_Point = {INT32_MAX, {0, 0}};
+
 	TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNoise* Moist, SimplexNoise* Temp, int X, int Z);
 
 	Node* At(int X, int Z) {
@@ -28,6 +36,8 @@ public:
 
 		return &Nodes[CHUNK_SIZE * Node_X + Node_Z];
 	}
+
+
 };
 
 #endif

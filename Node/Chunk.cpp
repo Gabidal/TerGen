@@ -18,12 +18,26 @@ TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNois
 			Node* node = At(Real_X, Real_Z);
 
 			node->Y = Ground->fractal(4, Real_X, Real_Z);
-			node->Moisture = Moist->fractal(4, Real_X, Real_Z);
-			node->Tempature = Temp->fractal(4, Real_X, Real_Z);
+			node->Moisture = ((Moist->fractal(4, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
+			node->Tempature = ((Temp->fractal(4, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
+
+			if (node->Moisture > Max_Moisture)
+				Max_Moisture = node->Moisture;
+
+			if (node->Tempature > Max_Tempature)
+				Max_Tempature = node->Tempature;
+
+			if (node->Y > Highest_Point.first) {
+				Highest_Point = { node->Y, {x, z} };
+			}
+
+			if (node->Y < Lowest_Point.first) {
+				Lowest_Point = { node->Y, {x, z} };
+			}
 		}
 	}
 
-	for (auto* P : Patterns) {
-		P->Calculate(P->X, P->Z, Nodes);
-	}
+	//for (auto* P : Patterns) {
+	//	P->Calculate(P->X, P->Z, Nodes);
+	//}
 }

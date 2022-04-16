@@ -21,6 +21,12 @@ public:
 	int Resolution; //1x resolution == native resolution
 	int World_Size;
 
+	float Frequenzy;
+	float Amplitude;
+	float Lacuranity;
+	float Persistance;
+	float Seed;
+
 	SimplexNoise* Ground_Noise_Generator;
 	SimplexNoise* Moisture_Generator;
 	SimplexNoise* Tempature_Generator;
@@ -37,6 +43,13 @@ public:
 		Ground_Noise_Generator = new SimplexNoise(freq, amp, lac, per, sed);
 		Moisture_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed);
 		Tempature_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed * sed);
+
+		Frequenzy = freq;
+		Amplitude = amp;
+		Lacuranity = lac;
+		Persistance = per;
+		Seed = sed;
+
 	}
 
 	void Factory() {
@@ -51,6 +64,19 @@ public:
 				);
 			}
 		}
+
+
+		for (int X = 0; X < World_Size; X++) {
+			for (int Z = 0; Z < World_Size; Z++) {
+				for (auto p : Chunks[(World_Size * X) + Z]->Patterns) {
+					p->Calculate(p->X, p->Z, Chunks[(World_Size * X) + Z]->Nodes);
+				}
+			}
+		}
+
+
+		Corrode();
+
 	}
 
 	unsigned char Allocate_Color() {
@@ -89,8 +115,17 @@ public:
 
 	void Integrate();
 
+	void Corrode();
+
 	TerGen_Chunk* At(int x, int y) {
 		return Chunks[World_Size * x + y];
+	}
+
+	TerGen_Chunk* At(TerGen_Node_Coordinates coordinates) {
+		int CX = coordinates.X / CHUNK_SIZE;
+		int CZ = coordinates.Z / CHUNK_SIZE;
+
+		return Chunks[World_Size * CX + CZ];
 	}
 };
 

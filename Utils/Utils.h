@@ -55,10 +55,18 @@ namespace UTILS
 
     extern unsigned long Rand();
 
-    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget);
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node*>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
 
     extern unsigned char Get_Color(FUNCTION func);
     extern FUNCTION Get_Function(unsigned char color);
+
+    template<typename T>
+    void Append(vector<T>& a, vector<T> b) {
+        for (auto i : b) {
+            a.push_back(i);
+        }
+    }
 }
 
 

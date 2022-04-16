@@ -121,7 +121,7 @@ FUNCTION UTILS::Get_Function(unsigned char color) {
 
 //NOTE!: this Path_Find algorithm is only made for non decimal A & B coordinates.
 //for docimal coorniate path finding, try Chaos::Path_Find(A, B);
-vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget) {
+vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width) {
 	//The way that we make this path finding algorithm is by calculating
 	//each tile next to the current tile and calculate their relative distance between the A and B.
 	vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Result;
@@ -135,8 +135,8 @@ vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::
 		int Start_X = max(Previus.X - 1, 0);
 		int Start_Z = max(Previus.Z - 1, 0);
 
-		int End_X = min(Previus.X + 2, CHUNK_SIZE);
-		int End_Z = min(Previus.Z + 2, CHUNK_SIZE);
+		int End_X = min(Previus.X + 2, Width);
+		int End_Z = min(Previus.Z + 2, Width);
 
 		for (int x = Start_X; x < End_X; x++) {
 			for (int z = Start_Z; z < End_Z; z++) {
@@ -150,7 +150,7 @@ vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::
 					pow(z - B.Z, 2)
 				);
 
-				float Cost = nodes[CHUNK_SIZE * x + z].Y - nodes[CHUNK_SIZE * Previus.X, Previus.Z].Y;
+				float Cost = nodes[Width * x + z].Y - nodes[Width * Previus.X, Previus.Z].Y;
 
 				if (Best_Candidate.second.first > Distance_From_Current_To_B && Cost <= budget && Best_Candidate.second.second > Cost) {
 					Best_Candidate = { {x, z}, {Distance_From_Current_To_B, Cost} };
@@ -171,3 +171,52 @@ vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::
 	return Result;
 }
 
+vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::vector<Node*>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width) {
+	//The way that we make this path finding algorithm is by calculating
+	//each tile next to the current tile and calculate their relative distance between the A and B.
+	vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Result;
+
+	//We will calculate all the surrounding nodes neighbouring the current nodem and 
+	//get the best of them.
+	TerGen_Node_Coordinates Previus = A;
+	pair<TerGen_Node_Coordinates, pair<float, float>> Best_Candidate = { {Previus.X, Previus.Z}, {INT32_MAX, INT32_MAX} };
+
+	while (Previus != B) {
+		int Start_X = max(Previus.X - 1, 0);
+		int Start_Z = max(Previus.Z - 1, 0);
+
+		int End_X = min(Previus.X + 2, Width);
+		int End_Z = min(Previus.Z + 2, Width);
+
+		for (int x = Start_X; x < End_X; x++) {
+			for (int z = Start_Z; z < End_Z; z++) {
+				//skip the middle
+				if (x == Previus.X && z == Previus.Z)
+					continue;
+
+				//Calculate the distance between the previus and B
+				float Distance_From_Current_To_B = sqrt(
+					pow(x - B.X, 2) +
+					pow(z - B.Z, 2)
+				);
+
+				float Cost = nodes[Width * x + z]->Y - nodes[Width * Previus.X, Previus.Z]->Y;
+
+				if (Best_Candidate.second.first > Distance_From_Current_To_B && Cost <= budget && Best_Candidate.second.second > Cost) {
+					Best_Candidate = { {x, z}, {Distance_From_Current_To_B, Cost} };
+				}
+			}
+		}
+
+		Result.push_back(Best_Candidate);
+
+		if (Previus == Best_Candidate.first) {
+			//infinite loop occured
+			break;
+		}
+
+		Previus = Best_Candidate.first;
+	}
+
+	return Result;
+}
