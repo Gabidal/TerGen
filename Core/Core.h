@@ -122,8 +122,8 @@ public:
 	}
 
 	TerGen_Chunk* At(TerGen_Node_Coordinates coordinates) {
-		int CX = coordinates.X / CHUNK_SIZE;
-		int CZ = coordinates.Z / CHUNK_SIZE;
+		int CX = coordinates.X / CHUNK_SIZE - ((unsigned)coordinates.X >> 31);
+		int CZ = coordinates.Z / CHUNK_SIZE - ((unsigned)coordinates.Z >> 31);
 
 		return Chunks[World_Size * CX + CZ];
 	}

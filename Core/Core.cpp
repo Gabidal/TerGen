@@ -131,7 +131,11 @@ void TerGen_Core::Corrode() {
 	short Min_Moisture = SHRT_MAX;
 	short Max_Moisture = 0;
 
-	short Moisture_Threshold = SHRT_MAX / 10;
+	int Average_Moisture = 0;
+
+	float Realtive_Scale_Towards_Frequenzy = min(2 / Frequenzy, (float)10);
+	float River_Width_Radius = max(Realtive_Scale_Towards_Frequenzy , (float)2);
+	float Intensity = 0.05/Amplitude;
 
 	vector<Node*> Liquid_Buffer;
 
@@ -150,16 +154,21 @@ void TerGen_Core::Corrode() {
 
 		if (i->Max_Moisture < Min_Moisture)
 			Min_Moisture = i->Max_Moisture;
+
+		Average_Moisture += i->Max_Moisture;
 	}
+
+	Average_Moisture /= Chunks.size();
+	Average_Moisture = (Frequenzy * (float)Average_Moisture) * Amplitude * 10;
 
 	//sort the chunks that are close enough to the extreme points.
 	for (int x = 0; x < World_Size; x++) {
 		for (int z = 0; z < World_Size; z++) {
 			TerGen_Chunk* chunk = At(x, z);
 
-			if (abs(chunk->Max_Moisture - Max_Moisture) <= Moisture_Threshold)
+			if (abs(chunk->Max_Moisture - Max_Moisture) <= Average_Moisture)
 				Most_Moist_Chunks.push_back({ chunk, {x, z} });
-			if (abs(chunk->Max_Moisture - Min_Moisture) <= Moisture_Threshold)
+			else if (abs(chunk->Max_Moisture - Min_Moisture) <= Average_Moisture)
 				Least_Moist_Chunks.push_back({ chunk, {x, z} });
 		}
 	}
@@ -181,20 +190,39 @@ void TerGen_Core::Corrode() {
 			B.X += CHUNK_SIZE * Least.second.X;
 			B.Z += CHUNK_SIZE * Least.second.Z;
 
-			UTILS::Append(Tmp_Paths, UTILS::Path_Find(Liquid_Buffer, A, B, INT32_MAX, World_Size * CHUNK_SIZE));
-
-
+			UTILS::Append(Tmp_Paths, UTILS::Path_Find(Liquid_Buffer, A, B, 0, World_Size * CHUNK_SIZE));
 		}
 
 		UTILS::Append(Paths, Tmp_Paths);
 
 	}
 
-	for (auto& p : Paths) {
-		Node* node = At({ p.first.X, p.first.Z })->At(p.first.X, p.first.Z);
+	//We can image the center being always at the center [0, 0]
+	float Most_Distant_Point_From_Center = sqrt(pow(0 - River_Width_Radius, (float)2) + pow(0 - River_Width_Radius, (float)2));
 
-		//node->Y -= 1;
-		node->Color = 4;
+	for (auto& p : Paths) {
+
+		for (auto n : UTILS::Get_Surrounding_Coordinates({ p.first.X, p.first.Z }, River_Width_Radius, { 0, World_Size * CHUNK_SIZE - 1 })) {
+			TerGen_Chunk* chunk = At({ n.X, n.Z });
+			Node* node = chunk->At(n.X, n.Z);
+
+			//measure the effect
+			float Distance_From_Center = sqrt(pow(p.first.X - n.X, 2) + pow(p.first.Z - n.Z, 2));
+
+			float Modifier = pow(Distance_From_Center / Most_Distant_Point_From_Center, Intensity);
+
+			/*if (Modifier == 0) {
+				continue;
+			}*/
+
+			node->Y *= Modifier;
+		}
+
+		//Get_Surrounding_Coordinates doesnt ofcourse give us the middle node, thus we need to do it here
+		/*TerGen_Chunk* chunk = At({ p.first.X, p.first.Z });
+		Node* node = chunk->At(p.first.X, p.first.Z);
+
+		node->Y *= pow(0.1, Intensity);*/
 	}
 }
 

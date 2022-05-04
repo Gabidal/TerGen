@@ -126,45 +126,46 @@ vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::
 	//each tile next to the current tile and calculate their relative distance between the A and B.
 	vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Result;
 
-	//We will calculate all the surrounding nodes neighbouring the current nodem and 
-	//get the best of them.
 	TerGen_Node_Coordinates Previus = A;
-	pair<TerGen_Node_Coordinates, pair<float, float>> Best_Candidate = { {Previus.X, Previus.Z}, {INT32_MAX, INT32_MAX} };
 
-	while (Previus != B) {
-		int Start_X = max(Previus.X - 1, 0);
-		int Start_Z = max(Previus.Z - 1, 0);
+	float Default_Distance = sqrt(pow(1 - 0, 2) + pow(1 - 0, 2));
+	float New_Distance = sqrt(pow(1 - 1, 2) + pow(1 - 0, 2));
 
-		int End_X = min(Previus.X + 2, Width);
-		int End_Z = min(Previus.Z + 2, Width);
+	float Allowed_Error = abs(New_Distance - Default_Distance);
 
-		for (int x = Start_X; x < End_X; x++) {
-			for (int z = Start_Z; z < End_Z; z++) {
-				//skip the middle
-				if (x == Previus.X && z == Previus.Z)
-					continue;
+	float Distance = sqrt(pow(B.X - A.X, 2) + pow(B.Z - A.Z, 2));
 
-				//Calculate the distance between the previus and B
-				float Distance_From_Current_To_B = sqrt(
-					pow(x - B.X, 2) +
-					pow(z - B.Z, 2)
-				);
+	while (Distance > 1) {
 
-				float Cost = nodes[Width * x + z].Y - nodes[Width * Previus.X, Previus.Z].Y;
+		pair<TerGen_Node_Coordinates, pair<float, float>> Best_Candidate = { {0, 0}, {0, 0} };
 
-				if (Best_Candidate.second.first > Distance_From_Current_To_B && Cost <= budget && Best_Candidate.second.second > Cost) {
-					Best_Candidate = { {x, z}, {Distance_From_Current_To_B, Cost} };
+		int Closest_X = Clamp(Previus.X + Sign(B.X - Previus.X), { 0, Width -1 });
+		int Closest_Z = Clamp(Previus.Z + Sign(B.Z - Previus.Z), { 0, Width -1 });
+
+		float Closest_Cost = nodes[Width * Previus.X + Previus.Z].Y - nodes[Width * Closest_X, Closest_Z].Y;
+
+		Distance = sqrt(pow(B.X - Closest_X, 2) + pow(B.Z - Closest_Z, 2));
+
+		Best_Candidate = { {Closest_X, Closest_Z},{Distance, Closest_Cost} };
+
+		for (auto n : Get_Surrounding_Coordinates(Previus, 1, { 0, Width })) {
+
+			if (n.X == Closest_X && n.Z == Closest_Z)
+				continue;
+
+			float Cost = nodes[Width * Previus.X + Previus.Z].Y - nodes[Width * n.X, n.Z].Y;
+
+			if (Cost <= budget && Cost < Closest_Cost) {
+
+				float New_Distance = sqrt(pow(B.X - n.X, 2) + pow(B.Z - n.Z, 2));
+
+				if (abs(New_Distance - Distance) <= Allowed_Error) {
+					Best_Candidate = { {n.X, n.Z}, {New_Distance, Cost} };
 				}
 			}
 		}
 
 		Result.push_back(Best_Candidate);
-
-		if (Previus == Best_Candidate.first) {
-			//infinite loop occured
-			break;
-		}
-
 		Previus = Best_Candidate.first;
 	}
 
@@ -176,47 +177,82 @@ vector<pair<TerGen_Node_Coordinates, pair<float, float>>> UTILS::Path_Find(std::
 	//each tile next to the current tile and calculate their relative distance between the A and B.
 	vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Result;
 
-	//We will calculate all the surrounding nodes neighbouring the current nodem and 
-	//get the best of them.
 	TerGen_Node_Coordinates Previus = A;
-	pair<TerGen_Node_Coordinates, pair<float, float>> Best_Candidate = { {Previus.X, Previus.Z}, {INT32_MAX, INT32_MAX} };
 
-	while (Previus != B) {
-		int Start_X = max(Previus.X - 1, 0);
-		int Start_Z = max(Previus.Z - 1, 0);
+	float Default_Distance = sqrt(pow(1 - 0, 2) + pow(1 - 0, 2));
+	float New_Distance = sqrt(pow(1 - 1, 2) + pow(1 - 0, 2));
 
-		int End_X = min(Previus.X + 2, Width);
-		int End_Z = min(Previus.Z + 2, Width);
+	float Allowed_Error = abs(New_Distance - Default_Distance);
 
-		for (int x = Start_X; x < End_X; x++) {
-			for (int z = Start_Z; z < End_Z; z++) {
-				//skip the middle
-				if (x == Previus.X && z == Previus.Z)
-					continue;
+	float Distance = sqrt(pow(B.X - A.X, 2) + pow(B.Z - A.Z, 2));
 
-				//Calculate the distance between the previus and B
-				float Distance_From_Current_To_B = sqrt(
-					pow(x - B.X, 2) +
-					pow(z - B.Z, 2)
-				);
+	while (Distance > 1) {
 
-				float Cost = nodes[Width * x + z]->Y - nodes[Width * Previus.X, Previus.Z]->Y;
+		pair<TerGen_Node_Coordinates, pair<float, float>> Best_Candidate = {{0, 0}, {0, 0}};
 
-				if (Best_Candidate.second.first > Distance_From_Current_To_B && Cost <= budget && Best_Candidate.second.second > Cost) {
-					Best_Candidate = { {x, z}, {Distance_From_Current_To_B, Cost} };
+		int Closest_X = Clamp(Previus.X + Sign(B.X - Previus.X), { 0, Width - 1 });
+		int Closest_Z = Clamp(Previus.Z + Sign(B.Z - Previus.Z), { 0, Width - 1 });
+
+		float Closest_Cost = nodes[Width * Previus.X + Previus.Z]->Y - nodes[Width * Closest_X, Closest_Z]->Y;
+
+		Distance = sqrt(pow(B.X - Closest_X, 2) + pow(B.Z - Closest_Z, 2));
+
+		Best_Candidate = { {Closest_X, Closest_Z},{Distance, Closest_Cost} };
+			
+		for (auto n : Get_Surrounding_Coordinates(Previus, 1, { 0, Width })) {
+
+			if (n.X == Closest_X && n.Z == Closest_Z)
+				continue;
+
+			float Cost = nodes[Width * Previus.X + Previus.Z]->Y - nodes[Width * n.X, n.Z]->Y;
+
+			if (Cost <= budget && Cost < Closest_Cost) {
+
+				float New_Distance = sqrt(pow(B.X - n.X, 2) + pow(B.Z - n.Z, 2));
+
+				if (abs(New_Distance - Distance) <= Allowed_Error) {
+					Best_Candidate = {{n.X, n.Z}, {New_Distance, Cost}};
 				}
 			}
 		}
 
 		Result.push_back(Best_Candidate);
-
-		if (Previus == Best_Candidate.first) {
-			//infinite loop occured
-			break;
-		}
-
 		Previus = Best_Candidate.first;
 	}
 
 	return Result;
+}
+
+vector<TerGen_Node_Coordinates> UTILS::Get_Surrounding_Coordinates(TerGen_Node_Coordinates coordinates, int radius, pair<int, int> MinMax) {
+	int Max_X = min(coordinates.X + radius + 1, MinMax.second);
+	int Max_Z = min(coordinates.Z + radius + 1, MinMax.second);
+
+	int Min_X = max(coordinates.X - radius, MinMax.first);
+	int Min_Z = max(coordinates.Z - radius, MinMax.first);
+
+	vector<TerGen_Node_Coordinates> Result;
+
+	for (int x = Min_X; x < Max_X; x++) {
+		for (int z = Min_Z; z < Max_Z; z++) {
+			if (x == coordinates.X && z == coordinates.Z)
+				continue;
+
+			Result.push_back({ x, z });
+
+		}
+	}
+
+	return Result;
+}
+
+int UTILS::Sign(float x)
+{
+	if (x >= 0)
+		return 1;
+	else
+		return -1;
+}
+
+int UTILS::Clamp(int x, pair<int, int> MinMax) {
+	return min(max(x, MinMax.first), MinMax.second);
 }

@@ -67,6 +67,12 @@ namespace UTILS
             a.push_back(i);
         }
     }
+
+    extern vector<TerGen_Node_Coordinates> Get_Surrounding_Coordinates(TerGen_Node_Coordinates coordinates, int radius, pair<int, int> MinMax);
+
+    extern int Sign(float x);
+
+    extern int Clamp(int x, pair<int, int> MinMax);
 }
 
 

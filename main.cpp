@@ -97,7 +97,7 @@ vector<Node*> TerGen(
 
 	core->Factory();
 
-	core->Integrate();
+	//core->Integrate();
 
 	vector<Node*> Output;
 
