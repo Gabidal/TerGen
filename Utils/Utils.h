@@ -73,6 +73,49 @@ namespace UTILS
     extern int Sign(float x);
 
     extern int Clamp(int x, pair<int, int> MinMax);
+
+    class Vector2 {
+    public:
+        float X = 0;
+        float Z = 0;
+
+        Vector2(float x, float z) {
+            X = x;
+            Z = z;
+        }
+
+        Vector2 operator+(Vector2 other) {
+            Vector2 Result = *this;
+
+            Result.X += other.X;
+            Result.Z += other.Z;
+
+            return Result;
+        }
+
+        Vector2 operator*(float num) {
+            Vector2 Result = *this;
+
+            Result.X *= num;
+            Result.Z *= num;
+
+            return Result;
+        }
+
+
+        Vector2 operator+(float num) {
+            Vector2 Result = *this;
+
+            Result.X += num;
+            Result.Z += num;
+
+            return Result;
+        }
+    };
+
+    //Idea by Inigo Quilez
+    //f(p) = fbm( p + fbm( p + fbm( p )) )
+    extern float Warp(Vector2 Position);
 }
 
 

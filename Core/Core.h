@@ -27,6 +27,9 @@ public:
 	float Persistance;
 	float Seed;
 
+	float FBM_Octaves;
+	float Warp_Octaves;
+
 	SimplexNoise* Ground_Noise_Generator;
 	SimplexNoise* Moisture_Generator;
 	SimplexNoise* Tempature_Generator;
@@ -34,22 +37,40 @@ public:
 	vector<TerGen_Chunk*> Chunks;
 	vector<Pattern> Patterns;
 
-	TerGen_Core(float freq, float amp, float lac, float per, float sed, int Res = 1, int W = 1) {
+	vector<vector<float>> Offsetters;
+
+	TerGen_Core(float freq, float amp, float lac, float per, float sed, float fbm_octaves, float warp_octaves, int Res = 1, int W = 1) {
 		Resolution = Res;
 		World_Size = W;
 
 		Chunks.resize(World_Size * World_Size);
 
 		Ground_Noise_Generator = new SimplexNoise(freq, amp, lac, per, sed);
-		Moisture_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed);
-		Tempature_Generator = new SimplexNoise(freq, amp, lac, per, sed * sed * sed);
+		Moisture_Generator = new SimplexNoise(freq, amp, lac, per, sed);
+		Tempature_Generator = new SimplexNoise(freq, amp, lac, per, sed);
 
 		Frequenzy = freq;
 		Amplitude = amp;
 		Lacuranity = lac;
 		Persistance = per;
 		Seed = sed;
+		FBM_Octaves = fbm_octaves;
+		Warp_Octaves = warp_octaves;
 
+		for (int i = 0; i < Warp_Octaves; i++) {
+
+			vector<float> Current;
+			for (int j = 0; j < 4; j++) {
+				Current.push_back((float)rand() / INT32_MAX * 10000);
+			}
+
+			Offsetters.push_back(Current);
+		}
+
+		/*Offsetters = {
+			{0.0, 0.0, 5.2, 1.3},
+			{1.7, 9.2, 8.3, 2.8}
+		};*/
 	}
 
 	void Factory() {
@@ -116,6 +137,7 @@ public:
 	void Integrate();
 
 	void Corrode();
+	void River();
 
 	TerGen_Chunk* At(int x, int y) {
 		return Chunks[World_Size * x + y];

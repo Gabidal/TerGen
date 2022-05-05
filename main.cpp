@@ -31,16 +31,24 @@ int main(int argc, const char* argv[]) {
 
 		return 1;
 	}
+	
+	float Frequenzy = 0.1;
+	float Amplitude = 1;
+	float Lacuranity = 4;
+	float Persictent = 0.3;
+	float Seed = 1;
+	float FBM_Octaves = 4;
+	float WARP_Octaves = 2;
 
 	vector<TerGen_Chunk*> World;
 
 	////chancge the const char* into char**
 	CMD = new Args(argv, argc);
 
-	core = new Core(CMD->Resolution, CMD->World_Size);
+	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, Seed, FBM_Octaves, WARP_Octaves, CMD->Resolution, CMD->World_Size);
+
 
 	vector<FUNCTION> functions = {
-		Foo
 	};
 
 	for (auto& i : functions) {
@@ -48,8 +56,9 @@ int main(int argc, const char* argv[]) {
 	}
 
 	core->Factory();
+	World = core->Chunks;
 
-	core->Integrate();
+	//core->Integrate();
 
 	Producer producer(World);
 }
@@ -74,7 +83,9 @@ vector<Node*> TerGen(
 	float Amplitude,
 	float Lacuranity,
 	float Persictent,
-	float Seed
+	float Seed,
+	float FBM_Octaves,
+	float WARP_Octaves
 ) {
 	
 	vector<TerGen_Chunk*> World;
@@ -89,7 +100,7 @@ vector<Node*> TerGen(
 
 	CMD = new Args(Arguments.data(), Arguments.size());
 
-	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, Seed, CMD->Resolution, CMD->World_Size);
+	core = new TerGen_Core(Frequenzy, Amplitude, Lacuranity, Persictent, Seed, FBM_Octaves, WARP_Octaves, CMD->Resolution, CMD->World_Size);
 
 	for (auto& i : Packets) {
 		core->Patterns.push_back(Pattern(i.Function, i.Weight));

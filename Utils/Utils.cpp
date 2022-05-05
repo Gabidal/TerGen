@@ -3,6 +3,7 @@
 #include "../Core/Core.h"
 #include "../Node/Node.h"
 #include "../Node/Chunk.h"
+#include "../Node/Simplex.h"
 
 extern TerGen_Core* core;
 
@@ -255,4 +256,39 @@ int UTILS::Sign(float x)
 
 int UTILS::Clamp(int x, pair<int, int> MinMax) {
 	return min(max(x, MinMax.first), MinMax.second);
+}
+
+float UTILS::Warp(Vector2 Position) {
+	float Result = 0;
+
+	SimplexNoise fbm = *core->Ground_Noise_Generator;//SimplexNoise(core->Frequenzy, core->Amplitude, core->Lacuranity, core->Persistance, core->Seed);
+	const int Resolution = core->Warp_Octaves;
+	const float Final_Offset = 4;
+
+	//For every loop we make a new p + fbm(p) to the current value.
+	Vector2 Current(0, 0);
+	for (int i = 0; i < Resolution; i++) {
+		float R1 = core->Offsetters[i][0];
+		float R2 = core->Offsetters[i][1];
+
+
+		Vector2 Offsetter1(Position + Vector2{R1, R2} + Current * Final_Offset);
+
+		R1 = core->Offsetters[i][2];
+		R2 = core->Offsetters[i][3];
+
+		Vector2 Offsetter2(Position + Vector2{ R1, R2 } + Current * Final_Offset);
+
+		Current = Vector2(
+			fbm.fractal(core->FBM_Octaves, Offsetter1.X, Offsetter1.Z),
+			fbm.fractal(core->FBM_Octaves, Offsetter2.X, Offsetter2.Z)
+		);
+
+	}
+
+	Vector2 tmp = Position + Current * Final_Offset;
+
+	Result = fbm.fractal(core->FBM_Octaves, tmp.X, tmp.Z);
+
+	return Result;
 }

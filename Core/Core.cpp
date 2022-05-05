@@ -125,6 +125,10 @@ void TerGen_Core::Integrate()
 }
 
 void TerGen_Core::Corrode() {
+	
+}
+
+void TerGen_Core::River() {
 	vector<pair<TerGen_Chunk*, TerGen_Chunk_Coordinates>> Most_Moist_Chunks;
 	vector<pair<TerGen_Chunk*, TerGen_Chunk_Coordinates>> Least_Moist_Chunks;
 
@@ -134,8 +138,8 @@ void TerGen_Core::Corrode() {
 	int Average_Moisture = 0;
 
 	float Realtive_Scale_Towards_Frequenzy = min(2 / Frequenzy, (float)10);
-	float River_Width_Radius = max(Realtive_Scale_Towards_Frequenzy , (float)2);
-	float Intensity = 0.05/Amplitude;
+	float River_Width_Radius = max(Realtive_Scale_Towards_Frequenzy, (float)2);
+	float Intensity = 0.05 / Amplitude;
 
 	vector<Node*> Liquid_Buffer;
 
@@ -143,7 +147,7 @@ void TerGen_Core::Corrode() {
 
 	UTILS::For_All_Nodes([&Liquid_Buffer](Node* node, int x, int y, int Chunk_X, int Chunk_Y) {
 		Liquid_Buffer[Chunk_X + Chunk_Y] = node;
-	});
+		});
 
 	//draw A points to most moist chunks,  and B points into least moist chunks.
 
@@ -225,6 +229,4 @@ void TerGen_Core::Corrode() {
 		node->Y *= pow(0.1, Intensity);*/
 	}
 }
-
-
 
