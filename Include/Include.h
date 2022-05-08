@@ -11,6 +11,7 @@ constexpr int MAX_HEIGHT = CHUNK_SIZE / 2;
 class Node {
 public:
     float Y;
+    float Delta;
     unsigned char Color;
     short Moisture;
     short Tempature;

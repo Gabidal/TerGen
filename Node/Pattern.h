@@ -26,7 +26,7 @@ public:
 class Pattern {
 public:
 	unsigned char Color;  //Colors represent node ground types.
-	Node* Nodes; //Points back to the chunk.
+	Node* Nodes = nullptr; //Points back to the chunk.
 	int X;	//starting address X
 	int Z;	//starting address Y
 	FUNCTION Function; //modifier
