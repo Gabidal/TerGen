@@ -90,14 +90,11 @@ public:
 		for (int X = 0; X < World_Size; X++) {
 			for (int Z = 0; Z < World_Size; Z++) {
 				for (auto p : Chunks[(World_Size * X) + Z]->Patterns) {
-					p->Calculate(p->X, p->Z, Chunks[(World_Size * X) + Z]->Nodes);
+					TerGen_Chunk* chunk = Chunks[(World_Size * X) + Z];
+					p->Calculate(p->X, p->Z, chunk->Nodes);
 				}
 			}
 		}
-
-
-		Corrode();
-
 	}
 
 	unsigned char Allocate_Color() {
@@ -114,7 +111,7 @@ public:
 	vector<Pattern*> Pack_Patterns(int X, int Z) {
 		int Range = Patterns.size();
 
-		int Population = Smart_Counter::Count(X, Z, Range);
+		int Population = Range;//Smart_Counter::Count(X, Z, Range);
 
 		vector<Pattern*> Result;
 
@@ -136,8 +133,8 @@ public:
 
 	void Integrate();
 
-	void Corrode();
-	void River();
+	//void Corrode();
+	//void River();
 
 	TerGen_Chunk* At(int x, int y) {
 		return Chunks[World_Size * x + y];

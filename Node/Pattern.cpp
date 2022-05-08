@@ -29,4 +29,21 @@ void Pattern::Calculate(int x, int z, Node* nodes) {
 	Z = z;
 
 	Function(this, nullptr);
+
+	//for (int x = 0; x < CHUNK_SIZE; x++) {
+	//	for (int z = 0; z < CHUNK_SIZE; z++) {
+	//		int index = CHUNK_SIZE * x + z;
+
+	//		Node* n = &nodes[index];
+	//		cout << n->Color + 48 << " ";
+
+
+	//	}
+	//	cout << endl;
+	//}
+
+	Node* n = &nodes[0];
+	float a = n->Color;
+	//cout << n << endl;
+
 }

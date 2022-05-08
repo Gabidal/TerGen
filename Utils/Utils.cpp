@@ -258,7 +258,7 @@ int UTILS::Clamp(int x, pair<int, int> MinMax) {
 	return min(max(x, MinMax.first), MinMax.second);
 }
 
-float UTILS::Warp(Vector2 Position) {
+float UTILS::Warp_Noise(Vector2 Position) {
 	float Result = 0;
 
 	SimplexNoise fbm = *core->Ground_Noise_Generator;//SimplexNoise(core->Frequenzy, core->Amplitude, core->Lacuranity, core->Persistance, core->Seed);

@@ -19,7 +19,7 @@ TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNois
 			Node* node = At(Real_X, Real_Z);
 
 			//node->Y = Ground->fractal(core->Octaves, Real_X, Real_Z);
-			node->Y = UTILS::Warp({ (float)Real_X, (float)Real_Z });
+			node->Y = UTILS::Warp_Noise({ (float)Real_X, (float)Real_Z });
 			
 			node->Moisture = ((Moist->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
 			node->Tempature = ((Temp->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;

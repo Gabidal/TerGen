@@ -118,7 +118,8 @@ namespace UTILS
     //NOTE!: this Path_Find algorithm is only made for non decimal A & B coordinates.
     //for docimal coorniate path finding, try Chaos::Path_Find(A, B);
     extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
-
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node*>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
+    
     extern unsigned char Get_Color(FUNCTION func);
     extern FUNCTION Get_Function(unsigned char color);
 
@@ -167,7 +168,7 @@ namespace UTILS
 
     //Idea by Inigo Quilez
     //f(p) = fbm( p + fbm( p + fbm( p )) )
-    extern float Warp(Vector2 Position);
+    extern float Warp_Noise(Vector2 Position);
 }
 
 #endif

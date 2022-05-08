@@ -115,7 +115,7 @@ namespace UTILS
 
     //Idea by Inigo Quilez
     //f(p) = fbm( p + fbm( p + fbm( p )) )
-    extern float Warp(Vector2 Position);
+    extern float Warp_Noise(Vector2 Position);
 }
 
 
