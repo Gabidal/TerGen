@@ -5,22 +5,26 @@
 #include <string>
 #include <functional>
 
-constexpr int CHUNK_SIZE = 16;
-constexpr int MAX_HEIGHT = CHUNK_SIZE / 2;
-
 class Node {
 public:
     float Y;
     float Delta;
     unsigned char Color;
-    short Moisture;
-    short Tempature;
+    /*short Moisture;
+    short Tempature*/;
 
-    Node(float y = 0, unsigned char c = 0, short moisture = 0, short tempature = 0) {
+    //Node(float y = 0, unsigned char c = 0, short moisture = 0, short tempature = 0, float delta = 0) {
+    //	Y = y;
+    //	Color = c;
+    //	Moisture = moisture;
+    //	Tempature = tempature;
+    //	Delta = delta;
+    //}
+
+    Node(float y = 0, unsigned char c = 0, float delta = 0) {
         Y = y;
         Color = c;
-        Moisture = moisture;
-        Tempature = tempature;
+        Delta = delta;
     }
 };
 
@@ -118,8 +122,8 @@ namespace UTILS
 
     //NOTE!: this Path_Find algorithm is only made for non decimal A & B coordinates.
     //for docimal coorniate path finding, try Chaos::Path_Find(A, B);
-    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
-    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node*>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = CHUNK_SIZE);
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = 16);
+    extern vector<pair<TerGen_Node_Coordinates, pair<float, float>>> Path_Find(vector<Node*>& nodes, TerGen_Node_Coordinates A, TerGen_Node_Coordinates B, float budget, int Width = 16);
     
     extern vector<TerGen_Node_Coordinates> Get_Surrounding_Coordinates(TerGen_Node_Coordinates coordinates, int radius, pair<int, int> MinMax);
 

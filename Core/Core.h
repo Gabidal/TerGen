@@ -86,7 +86,10 @@ public:
 			}
 		}
 
+		//calculate delta for every point on map.
+		Calculate_Delta();
 
+		//Color the map by given functinos from user.
 		for (int X = 0; X < World_Size; X++) {
 			for (int Z = 0; Z < World_Size; Z++) {
 				for (auto p : Chunks[(World_Size * X) + Z]->Patterns) {
@@ -95,6 +98,7 @@ public:
 				}
 			}
 		}
+
 	}
 
 	unsigned char Allocate_Color() {
@@ -146,6 +150,63 @@ public:
 
 		return Chunks[World_Size * CX + CZ];
 	}
+
+	vector<pair<int, int>> Get_Surrounding_Tiles(int X, int Z) {
+		vector<pair<int, int>> Result;
+
+		if (Z - 1 >= 0) {
+			Result.push_back({ X, Z });
+		}
+
+		if (X - 1 >= 0) {
+			Result.push_back({ X, Z });
+		}
+
+		if (Z + 1 < CHUNK_SIZE) {
+			Result.push_back({ X, Z });
+		}
+
+		if (X + 1 < CHUNK_SIZE) {
+			Result.push_back({ X, Z });
+		}
+
+		return Result;
+	}
+
+	void Calculate_Delta(){
+		for (int C_X = 0; C_X < World_Size; C_X++) {
+			for (int C_Z = 0; C_Z < World_Size; C_Z++) {
+				TerGen_Chunk* C = Chunks[(World_Size * C_X) + C_Z];
+
+				for (int N_X = 0; N_X < CHUNK_SIZE; N_X++) {
+					for (int N_Z = 0; N_Z < CHUNK_SIZE; N_Z++) {
+						Node* n = C->At(N_X, N_Z);
+
+						vector<int> Deltas;
+
+						//calculate all difference deltas betweent he current node and it's surrounding nodes.
+						for (auto Coord : Get_Surrounding_Tiles(N_X, N_Z)) {
+							Node* n2 = At(C_X, C_Z)->At(Coord.first, Coord.second);
+							Deltas.push_back(n->Y - n2->Y);
+						}
+						
+						//calculate the average delta
+						int Average = 0;
+
+						for (auto d : Deltas) {
+							Average += d;
+						}
+
+						Average /= Deltas.size();
+
+						n->Delta = Average;
+					}
+				}
+			}
+		}
+
+	}
+
 };
 
 #endif

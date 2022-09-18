@@ -21,14 +21,14 @@ TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNois
 			//node->Y = Ground->fractal(core->Octaves, Real_X, Real_Z);
 			node->Y = UTILS::Warp_Noise({ (float)Real_X, (float)Real_Z });
 			
-			node->Moisture = ((Moist->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
-			node->Tempature = ((Temp->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
+			//node->Moisture = ((Moist->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
+			//node->Tempature = ((Temp->fractal(core->FBM_Octaves, Real_X, Real_Z) + 1) * SHRT_MAX) / 2;
 
-			if (node->Moisture > Max_Moisture)
+			/*if (node->Moisture > Max_Moisture)
 				Max_Moisture = node->Moisture;
 
 			if (node->Tempature > Max_Tempature)
-				Max_Tempature = node->Tempature;
+				Max_Tempature = node->Tempature;*/
 
 			if (node->Y > Highest_Point.first) {
 				Highest_Point = { node->Y, {x, z} };
@@ -40,7 +40,4 @@ TerGen_Chunk::TerGen_Chunk(vector<Pattern*> p, SimplexNoise* Ground, SimplexNois
 		}
 	}
 
-	//for (auto* P : Patterns) {
-	//	P->Calculate(P->X, P->Z, Nodes);
-	//}
 }
