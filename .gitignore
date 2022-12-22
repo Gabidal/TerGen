@@ -1,11 +1,6 @@
-TerGen.vcxproj.filters
-TerGen.vcxproj.user
-CppProperties.json
-.c4droid
-main
-a.out
-Debug
-x64
-.vs
-Output.mtl
-Output.obj
+/Build/
+*.lib
+*.exe
+*.obj
+*.dll
+/include/

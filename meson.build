@@ -1,19 +1,19 @@
 project(
   'TerGen', 'cpp',
   version : '0.1.1',
-  default_options : ['warning_level=3', 'cpp_std=c++17']
+  default_options : ['warning_level=3', 'cpp_std=c++17', 'debug=false', 'buildtype=release']
 )
 
 sources = [
   'Dependencies/Simplex/Simplex.cpp',
 
   'src/Args.cpp',
+  'src/Utils.cpp',
 
   'main.cpp',
 ]
 
-executable(
+static_library(
   'TerGen',
-  sources,
-  install : true
+  sources
 )

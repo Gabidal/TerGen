@@ -1,4 +1,5 @@
 #include "Src/Args.h"
+#include "Src/Utils.h"
 
 #include <iostream>
 #include <vector>
@@ -20,6 +21,12 @@ int main(int argc, const char* argv[]) {
 
 		return 1;
 	}
+
+	TerGen::Generator g;
+
+	TerGen::Init_Utils({
+		{TerGen::Layer::GROUND, g}
+	});
 
 	////chancge the const char* into char**
 	CMD = new TerGen::Args(argv, argc);
