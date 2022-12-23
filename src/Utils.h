@@ -318,6 +318,8 @@ namespace TerGen{
 
     // Returns a list of points that are close to the given origin.
     extern std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, unsigned int Radius, unsigned int Point_Count);
+    
+    extern bool Approximately(long double A, long double B, long double Range);
 
 }
 

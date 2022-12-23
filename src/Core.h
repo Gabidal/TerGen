@@ -70,8 +70,19 @@ namespace TerGen{
     inline const unsigned int METER = 1;
 
     // INTERNAL:
-    unsigned int FOR_SURROUNDING_POINT_CHECK_FOR = 50;
-    unsigned int FOR_SURROUNDING_POINT_REACH = KILOMETER;
+    inline unsigned int FOR_SURROUNDING_POINT_CHECK_FOR = 50;
+    inline unsigned int FOR_SURROUNDING_POINT_REACH = KILOMETER;
+
+    // Close by half of the values of A & B.
+    inline long double ERROR_RANGE = 0.5f; 
+
+    // The range in which the sea/lakes reach their humidity to.
+    inline const unsigned int WATER_HUMIDITY_RANGE = 150 * KILOMETER;
+    inline const unsigned int EQUATOR_DRYNESS_REACH = 1500 * KILOMETER;
+
+    inline const unsigned int EQUATOR_HEAT_RANGE = 8500 * KILOMETER;
+    inline const unsigned int EQUATOR_MAX_HEAT = 100; 
+    inline const float ELEVATION_EFFECT_ON_TEMPERATURE = 0.5f; 
 
     extern Generator Construct_Single_Layer_Continent_Generator(unsigned int Octave);
     
@@ -84,7 +95,19 @@ namespace TerGen{
 
     extern long double Get_Distance_From_Closest_Body_Of_Water(Vector2 Current_Position);
 
-    extern Generator Construct_Multi_Layer_Climate_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+    // Conditions to return true:
+    // - If the GROUND generator gives an elevation of AVERAGE_SEA_LEVEL or lower.
+    // - If the HUMIDITY generator gives a value of 1.
+    extern bool Is_Water(Vector2 Position);
+
+    extern float Calculate_Humidity(Vector2 Position, Generator* g);
+
+    extern void Construct_Humidity_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+
+    extern float Calculate_Temperature(Vector2 Position, Generator* g);
+
+    extern void Construct_Temperature_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+
 
 }
 

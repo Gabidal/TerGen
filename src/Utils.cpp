@@ -214,4 +214,9 @@ namespace TerGen{
         return positions;
     }
 
+    bool Approximately(long double A, long double B, long double Range){
+        long double relErr = std::abs((A - B) / B);
+        return relErr <= Range;
+    }
+
 }
