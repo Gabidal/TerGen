@@ -24,9 +24,7 @@ int main(int argc, const char* argv[]) {
 
 	TerGen::Generator g;
 
-	TerGen::Init_Utils({
-		{TerGen::Layer::GROUND, g}
-	});
+	TerGen::Init_Utils();
 
 	////chancge the const char* into char**
 	CMD = new TerGen::Args(argv, argc);

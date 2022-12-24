@@ -36,7 +36,7 @@ namespace TerGen{
     inline const long double AVERAGE_CONTINENTAL_AREA = 27810074;
 
     // x * Scale cycle = continent, determines how many cycles the algorithm can do in an area.
-    inline const unsigned int Cycles = 10; 
+    inline const int Cycles = 10; 
 
     // Now lets calculate the average amplitude.
     // SRC: https://en.wikipedia.org/wiki/Earth
@@ -46,47 +46,50 @@ namespace TerGen{
     // Lowest point: 0m
     // Highest point: 8848m + 431m = 9279m
     // So the average height would simply be: 9279/2 = 4639.5m
-    inline const float AVERAGE_CONTINENTAL_HEIGHT = 4639.5f;
+    inline const double AVERAGE_CONTINENTAL_HEIGHT = 4639.5f;
 
     // We can also calculate the average sea level from the lowest point.
-    inline const unsigned int AVERAGE_SEA_LEVEL = 431;
+    inline const int AVERAGE_SEA_LEVEL = 431;
 
     // Lacuranity: how quickly the frequency increases for each successive octave
     // The greater the value, less overall change gradient between octaves.
     // In other words, use big number and the details hop between big and small changes.
     // And use small number and the changes between the big and small is less. 
-    inline const float Lacuranity = 0.25f;
+    inline const double Lacuranity = 0.25f;
 
     // Persistence: how much each octave contributes to the overall structure of the noise map
     // The greater the value, the more each successive octave will contribute to the overall noise map.
     // In other words, use big number and the details that the later octaves make are more visible.
     // And thus the first octaves contribute almost nothing.
-    inline const float Persistence = 0.2f;
+    inline const double Persistence = 0.2f;
 
     // Useful constants:
-    inline const unsigned int GIGAMETER = 1000000000;
-    inline const unsigned int MEGAMETER = 1000000;
-    inline const unsigned int KILOMETER = 1000;
-    inline const unsigned int METER = 1;
+    inline const int GIGAMETER = 1000000000;
+    inline const int MEGAMETER = 1000000;
+    inline const int KILOMETER = 1000;
+    inline const int METER = 1;
 
     // INTERNAL:
-    inline unsigned int FOR_SURROUNDING_POINT_CHECK_FOR = 50;
-    inline unsigned int FOR_SURROUNDING_POINT_REACH = KILOMETER;
+    inline int FOR_SURROUNDING_POINT_CHECK_FOR = 50;
+    inline int FOR_SURROUNDING_POINT_REACH = KILOMETER;
 
     // Close by half of the values of A & B.
     inline long double ERROR_RANGE = 0.5f; 
 
     // The range in which the sea/lakes reach their humidity to.
-    inline const unsigned int WATER_HUMIDITY_RANGE = 150 * KILOMETER;
-    inline const unsigned int EQUATOR_DRYNESS_REACH = 1500 * KILOMETER;
+    inline const int WATER_HUMIDITY_RANGE = 150 * KILOMETER;
+    inline const int EQUATOR_DRYNESS_REACH = 1500 * KILOMETER;
 
-    inline const unsigned int EQUATOR_HEAT_RANGE = 8500 * KILOMETER;
-    inline const unsigned int EQUATOR_MAX_HEAT = 100; 
-    inline const float ELEVATION_EFFECT_ON_TEMPERATURE = 0.5f; 
+    inline const int EQUATOR_HEAT_RANGE = 8500 * KILOMETER;
+    inline const int EQUATOR_MAX_HEAT = 100; 
+    inline const double ELEVATION_EFFECT_ON_TEMPERATURE = 0.5f; 
 
-    extern Generator Construct_Single_Layer_Continent_Generator(unsigned int Octave);
+    // The constants for the wind current clalculations.
+    inline const double GROUND_ROTATION = 1670 * KILOMETER;
+
+    extern Generator Construct_Single_Layer_Continent_Generator(int Octave);
     
-    extern Generator Construct_Multi_Layer_Continent_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+    extern Generator Construct_Multi_Layer_Continent_Generator(int Start_Octave, int End_Octave);
 
     // Now we will start to calculate the right constants for climate.
     // The Equators center is where ever the Y coordinate is 0. This will make a infinite line of equator.
@@ -100,14 +103,28 @@ namespace TerGen{
     // - If the HUMIDITY generator gives a value of 1.
     extern bool Is_Water(Vector2 Position);
 
-    extern float Calculate_Humidity(Vector2 Position, Generator* g);
+    extern double Calculate_Humidity(Vector2 Position);
+    extern double Calculate_Humidity(Vector2 Position, long double Distance_From_Closest_Body_Of_Water, long double Distance_From_Equator);
 
-    extern void Construct_Humidity_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+    extern void Construct_Humidity_Generator(int Start_Octave, int End_Octave);
 
-    extern float Calculate_Temperature(Vector2 Position, Generator* g);
+    extern double Calculate_Temperature(Vector2 Position);
+    extern double Calculate_Temperature(Vector2 Position, long double Distance_From_Equator, double Elevation);
 
-    extern void Construct_Temperature_Generator(unsigned int Start_Octave, unsigned int End_Octave);
+    extern void Construct_Temperature_Generator(int Start_Octave, int End_Octave);
 
+    extern Vector2 Get_Wind_Current(Vector2 Position, long double Distance_From_Equator, double Elevation, double Humidity, double Temperature, double Rotation_Speed, Generator* g);
+
+
+    extern Vector2 Get_Wind_Current(Vector2 Position);
+    extern void Construct_Wind_Generator(int Start_Octave, int End_Octave);
+
+    // For complex CLIMATE:
+    inline int BATCH_SIZE = 10;    // The lower the value the more accurate simulation. 10 = 10x10 area.
+
+    // Starts to compute the Complex Humidity, Temperature, Pressure, Wind, etc..
+    extern void Calculate_Climate(Chunk* c, int Batch_Size);
+    extern void Calculate_Climate();
 
 }
 

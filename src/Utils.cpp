@@ -3,9 +3,9 @@
 #include "Core.h"
 
 namespace TerGen{
-    float Current_Seed = 0;
+    double Current_Seed = 0;
 
-    Generator::Generator(float freq, float amp, float lac, float per, float sed, float fbm_octaves, float warp_octaves){
+    Generator::Generator(double freq, double amp, double lac, double per, double sed, double fbm_octaves, double warp_octaves){
         Frequency = freq;
         Amplitude = amp;
         Lacuranity = lac;
@@ -18,7 +18,7 @@ namespace TerGen{
 
         for (int i = 0; i < WARP_Octaves; i++) {
             for (int j = 0; j < 2 + 2; j++) {
-                WARP_Offsets.push_back((float)rand() / INT32_MAX * 10000);
+                WARP_Offsets.push_back((double)rand() / INT32_MAX * 10000);
             }
         }
     }
@@ -50,7 +50,7 @@ namespace TerGen{
         return z;
     }
 
-    int Sign(float x)
+    int Sign(double x)
     {
         if (x >= 0)
             return 1;
@@ -62,7 +62,7 @@ namespace TerGen{
         return std::min(std::max(x, MinMax.first), MinMax.second);
     }
 
-    void Init_Utils(float seed = -1){
+    void Init_Utils(double seed){
         srand(time(NULL));
         
         if (seed == -1)
@@ -71,9 +71,12 @@ namespace TerGen{
         Current_Seed = seed;
 
         Generators[Layer::GROUND] = {
-            Construct_Single_Layer_Continent_Generator(MEGAMETER),
-            Construct_Multi_Layer_Continent_Generator(MEGAMETER * 10, 4)
+            Construct_Single_Layer_Continent_Generator(0)
         };
+
+        Construct_Humidity_Generator(MEGAMETER * 10, 1);
+        Construct_Temperature_Generator(MEGAMETER * 10, 1);
+        Construct_Wind_Generator(MEGAMETER * 10, 1);
 
         for (auto& g : Generators[Layer::GROUND]){
 
@@ -88,20 +91,20 @@ namespace TerGen{
         }
     }
 
-    float FBM(Vector2 Position, Generator* generator){
+    double FBM(Vector2 Position, Generator* generator){
         return generator->Noise->fractal(generator->FBM_Octaves, Position.x, Position.y);
     }
 
-    float Noise(Vector2 Position, Generator* generator){
+    double Noise(Vector2 Position, Generator* generator){
         return generator->Noise->noise(Position.x, Position.y);
     }
 
-    float Noise(Vector3 Position, Generator* generator){
+    double Noise(Vector3 Position, Generator* generator){
         return generator->Noise->noise(Position.x, Position.y, Position.z);
     }
 
-    float Warp_Noise(Vector2 Position, Generator* generator) {
-        float Result = 0;
+    double Warp_Noise(Vector2 Position, Generator* generator) {
+        double Result = 0;
 
         const int R1_A_Index = 0;
         const int R1_B_Index = 1;
@@ -134,21 +137,24 @@ namespace TerGen{
         return Result;
     }
 
-    // Inits the chunk content.
-    void Init(Chunk& new_chunk){
+    // NOTE: This will automatically compute with the stupid mode. 
+    Chunk::Chunk(Vector3 position, Vector2 dimensions){
+        Position = position;
+        Dimensions = dimensions;
 
-        //Init the childs.
-        // for (int x = 0; x < new_chunk.Dimensions.x; x++)
-        //     for (int y = 0; y < new_chunk.Dimensions.y; y++)
-        //         new_chunk.Childs.push_back(Node(
+        this->Childs.resize(Dimensions.x * Dimensions.y);
 
-        //             Warp_Noise({x + new_chunk.Position.x, y + new_chunk.Position.y}, &Layers[Layer::TEMPERATURE]),
-        //             Warp_Noise({x + new_chunk.Position.x, y + new_chunk.Position.y}, &Layers[Layer::HUMIDITY]),
-        //             Warp_Noise({x + new_chunk.Position.x, y + new_chunk.Position.y}, &Layers[Layer::GROUND])
+        for (int y = 0; y < Dimensions.y; y++) {
+            for (int x = 0; x < Dimensions.x; x++) {
+                
+                this->Childs[x + y * Dimensions.x] = Node(
+                    Gather_All_Layers(Vector2(Position.x + x, Position.y + y), Layer::GROUND),
+                    Gather_All_Layers(Vector2(Position.x + x, Position.y + y), Layer::HUMIDITY),
+                    Gather_All_Layers(Vector2(Position.x + x, Position.y + y), Layer::TEMPERATURE)
+                );
 
-        //         ));
-
-
+            }
+        }
     }
 
     Chunk* Get_Chunk(Vector3 Position, Vector2 Dimension){
@@ -159,9 +165,6 @@ namespace TerGen{
         //Create the chunk.
         Chunk chunk(Position, Dimension);
 
-        //Init the chunk.
-        Init(chunk);
-
         //Add the chunk to the chunk list.
         Chunks[Position] = chunk;
 
@@ -169,10 +172,10 @@ namespace TerGen{
         return &Chunks[Position];
     }
 
-    float Gather_All_Layers(Vector2 position, std::string Layer_Name){
-        float Result = 0;
+    double Gather_All_Layers(Vector2 position, std::string Layer_Name){
+        double Result = 0;
 
-        std::vector<std::function<float(Vector2)>> Current_Layer = Layers[Layer_Name];
+        std::vector<std::function<double(Vector2)>> Current_Layer = Layers[Layer_Name];
 
         for (auto f : Current_Layer) {
             Result += f(position);
@@ -181,7 +184,7 @@ namespace TerGen{
         return Result;
     }
 
-    std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, unsigned int Radius, unsigned int Point_Count){
+    std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, int Radius, int Point_Count){
 
         // The number of points to generate within the radius.
         const int numPoints = Point_Count;
@@ -189,19 +192,19 @@ namespace TerGen{
         std::vector<Vector2> positions;
 
         // Calculate the spacing between the points.
-        float spacing = Radius / std::sqrt(numPoints);
+        double spacing = Radius / std::sqrt(numPoints);
 
         // Generate the points in a grid pattern.
-        for (float i = -Radius; i <= Radius; i += spacing)
+        for (double i = -Radius; i <= Radius; i += spacing)
         {
-            for (float j = -Radius; j <= Radius; j += spacing)
+            for (double j = -Radius; j <= Radius; j += spacing)
             {
                 // Calculate the position of the current point.
-                float px = Position.x + i;
-                float py = Position.y + j;
+                double px = Position.x + i;
+                double py = Position.y + j;
 
                 // Calculate the distance between the current point and the origin point.
-                float distance = std::sqrt(i * i + j * j);
+                double distance = std::sqrt(i * i + j * j);
 
                 // If the distance is within the radius, add the point to the vector.
                 if (distance <= Radius)
@@ -218,5 +221,6 @@ namespace TerGen{
         long double relErr = std::abs((A - B) / B);
         return relErr <= Range;
     }
+
 
 }

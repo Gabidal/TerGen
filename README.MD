@@ -1,9 +1,9 @@
 # How TerGen works:
 
 TerGen works by generating a 2D map of Nodes, where one node contains the 
-Height (float) and a colour (unsigned char). The Height represents the height of the node as if it would be in a 3D space.
+Height (double) and a colour (unsigned char). The Height represents the height of the node as if it would be in a 3D space.
 The colour of a node represents what type a node is. 
-If a function is set to represent the bushes, let’s say it has the colour 1, then the output maps all Nodes that have the colour 1 represent a bush.
+If a function is set to represent the bushes, letï¿½s say it has the colour 1, then the output maps all Nodes that have the colour 1 represent a bush.
 If a single node has the Height value of 1, and it has nodes surrounding at height 0, and this single node colour is different from its surrounding nodes,
 then the surrounding nodes will be its floor nodes below it, and this single node is above them, like a tree is above ground.
 

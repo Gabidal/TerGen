@@ -11,19 +11,21 @@ namespace TerGen{
     // This hold all the data.
     class Node{
     public:
-        float Temperature;
-        float Humidity;         // When humidity is 1, then water.
+        double Temperature;
+        double Humidity;         // When humidity is 1, then water.
+        Vector2 Wind_Current;
 
-        float Height;
+        double Height;
 
-        Node(float temp, float hum, float height){
+        Node(){}
 
-            Temperature = temp;
-            Humidity = hum;
+        Node(double height, double humidity, double temperature){
             Height = height;
-
+            Humidity = humidity;
+            Temperature = temperature;
+            Wind_Current = Vector2(0, 0);
         }
-    
+
     };
 
     class Chunk{
@@ -32,15 +34,11 @@ namespace TerGen{
         Vector2 Dimensions;
 
         std::vector<Node> Childs;
+        
+        Chunk(){}
 
-        Chunk(std::vector<Node> childs = {}){
-            Childs = childs;
-        }
-
-        Chunk(Vector3 position, Vector2 dimensions){
-            Position = position;
-            Dimensions = dimensions;
-        }
+        // NOTE: This automatically setups the elevation for its contents.
+        Chunk(Vector3 position, Vector2 dimensions);
     };
 
     inline std::map<Vector3, Chunk> Chunks;

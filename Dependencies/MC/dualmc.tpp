@@ -58,7 +58,7 @@ int DualMC<T>::getDualPointCode(int32_t const cx, int32_t const cy, int32_t cons
             // copy current cube coordinates into an array.
             int32_t neighborCoords[] = {cx,cy,cz};
             // get the dimension of the non-zero coordinate axis
-            unsigned int const component = direction >> 1;
+            int const component = direction >> 1;
             // get the sign of the direction
             int32_t delta = (direction & 1) == 1 ? 1 : -1;
             // modify the correspong cube coordinate
@@ -104,79 +104,79 @@ void DualMC<T>::calculateDualPoint(int32_t const cx, int32_t const cy, int32_t c
 
     // sum edge intersection vertices using the point code
     if(pointCode & EDGE0) {
-        p.x += ((float)iso - (float)data[gA(cx,cy,cz)])/((float)data[gA(cx+1,cy,cz)]-(float)data[gA(cx,cy,cz)]);
+        p.x += ((double)iso - (double)data[gA(cx,cy,cz)])/((double)data[gA(cx+1,cy,cz)]-(double)data[gA(cx,cy,cz)]);
         points++;
     }
 
     if(pointCode & EDGE1) {
         p.x += 1.0f;
-        p.z += ((float)iso - (float)data[gA(cx+1,cy,cz)])/((float)data[gA(cx+1,cy,cz+1)]-(float)data[gA(cx+1,cy,cz)]);
+        p.z += ((double)iso - (double)data[gA(cx+1,cy,cz)])/((double)data[gA(cx+1,cy,cz+1)]-(double)data[gA(cx+1,cy,cz)]);
         points++;
     }
 
     if(pointCode & EDGE2) {
-        p.x += ((float)iso - (float)data[gA(cx,cy,cz+1)])/((float)data[gA(cx+1,cy,cz+1)]-(float)data[gA(cx,cy,cz+1)]);
+        p.x += ((double)iso - (double)data[gA(cx,cy,cz+1)])/((double)data[gA(cx+1,cy,cz+1)]-(double)data[gA(cx,cy,cz+1)]);
         p.z += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE3) {
-        p.z += ((float)iso - (float)data[gA(cx,cy,cz)])/((float)data[gA(cx,cy,cz+1)]-(float)data[gA(cx,cy,cz)]);
+        p.z += ((double)iso - (double)data[gA(cx,cy,cz)])/((double)data[gA(cx,cy,cz+1)]-(double)data[gA(cx,cy,cz)]);
         points++;
     }
 
     if(pointCode & EDGE4) {
-        p.x += ((float)iso - (float)data[gA(cx,cy+1,cz)])/((float)data[gA(cx+1,cy+1,cz)]-(float)data[gA(cx,cy+1,cz)]);
+        p.x += ((double)iso - (double)data[gA(cx,cy+1,cz)])/((double)data[gA(cx+1,cy+1,cz)]-(double)data[gA(cx,cy+1,cz)]);
         p.y += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE5) {
         p.x += 1.0f;
-        p.z += ((float)iso - (float)data[gA(cx+1,cy+1,cz)])/((float)data[gA(cx+1,cy+1,cz+1)]-(float)data[gA(cx+1,cy+1,cz)]);
+        p.z += ((double)iso - (double)data[gA(cx+1,cy+1,cz)])/((double)data[gA(cx+1,cy+1,cz+1)]-(double)data[gA(cx+1,cy+1,cz)]);
         p.y += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE6) {
-        p.x += ((float)iso - (float)data[gA(cx,cy+1,cz+1)])/((float)data[gA(cx+1,cy+1,cz+1)]-(float)data[gA(cx,cy+1,cz+1)]);
+        p.x += ((double)iso - (double)data[gA(cx,cy+1,cz+1)])/((double)data[gA(cx+1,cy+1,cz+1)]-(double)data[gA(cx,cy+1,cz+1)]);
         p.z += 1.0f;
         p.y += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE7) {
-        p.z += ((float)iso - (float)data[gA(cx,cy+1,cz)])/((float)data[gA(cx,cy+1,cz+1)]-(float)data[gA(cx,cy+1,cz)]);
+        p.z += ((double)iso - (double)data[gA(cx,cy+1,cz)])/((double)data[gA(cx,cy+1,cz+1)]-(double)data[gA(cx,cy+1,cz)]);
         p.y += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE8) {
-        p.y += ((float)iso - (float)data[gA(cx,cy,cz)])/((float)data[gA(cx,cy+1,cz)]-(float)data[gA(cx,cy,cz)]);
+        p.y += ((double)iso - (double)data[gA(cx,cy,cz)])/((double)data[gA(cx,cy+1,cz)]-(double)data[gA(cx,cy,cz)]);
         points++;
     }
 
     if(pointCode & EDGE9) {
         p.x += 1.0f;
-        p.y += ((float)iso - (float)data[gA(cx+1,cy,cz)])/((float)data[gA(cx+1,cy+1,cz)]-(float)data[gA(cx+1,cy,cz)]);
+        p.y += ((double)iso - (double)data[gA(cx+1,cy,cz)])/((double)data[gA(cx+1,cy+1,cz)]-(double)data[gA(cx+1,cy,cz)]);
         points++;
     }
 
     if(pointCode & EDGE10) {
         p.x += 1.0f;
-        p.y += ((float)iso - (float)data[gA(cx+1,cy,cz+1)])/((float)data[gA(cx+1,cy+1,cz+1)]-(float)data[gA(cx+1,cy,cz+1)]);
+        p.y += ((double)iso - (double)data[gA(cx+1,cy,cz+1)])/((double)data[gA(cx+1,cy+1,cz+1)]-(double)data[gA(cx+1,cy,cz+1)]);
         p.z += 1.0f;
         points++;
     }
 
     if(pointCode & EDGE11) {
         p.z += 1.0f;
-        p.y += ((float)iso - (float)data[gA(cx,cy,cz+1)])/((float)data[gA(cx,cy+1,cz+1)]-(float)data[gA(cx,cy,cz+1)]);
+        p.y += ((double)iso - (double)data[gA(cx,cy,cz+1)])/((double)data[gA(cx,cy+1,cz+1)]-(double)data[gA(cx,cy,cz+1)]);
         points++;
     }
 
     // divide by number of accumulated points
-    float invPoints = 1.0f / (float)points;
+    double invPoints = 1.0f / (double)points;
     p.x*= invPoints;
     p.y*= invPoints;
     p.z*= invPoints;

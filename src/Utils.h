@@ -11,13 +11,14 @@
 #include "../Dependencies/Simplex/Simplex.h"
 
 namespace TerGen{
-    extern float Current_Seed;
+    extern double Current_Seed;
 
     namespace Layer{
 
         inline std::string GROUND = "GROUND";           // Height map generation
         inline std::string TEMPERATURE = "TEMPERATURE"; // Temperature map generation
         inline std::string HUMIDITY = "HUMIDITY";       // Humidity map generation
+        inline std::string WIND = "WIND";               // Wind map generation
 
     }
 
@@ -25,17 +26,17 @@ namespace TerGen{
     public:
         SimplexNoise* Noise;
 
-        float Frequency;
-        float Amplitude;
-        float Lacuranity;
-        float Persistent;
-        float Seed;
-        float FBM_Octaves;
-        float WARP_Octaves;
+        double Frequency;
+        double Amplitude;
+        double Lacuranity;
+        double Persistent;
+        double Seed;
+        double FBM_Octaves;
+        double WARP_Octaves;
         
-        std::vector<float> WARP_Offsets;
+        std::vector<double> WARP_Offsets;
 
-        Generator(float freq = 0.1, float amp = 1, float lac = 4, float per = 0.3, float sed = 1, float fbm_octaves = 4, float warp_octaves = 2);
+        Generator(double freq = 0.1, double amp = 1, double lac = 4, double per = 0.3, double sed = 1, double fbm_octaves = 4, double warp_octaves = 2);
     };
 
     class Vector2{
@@ -292,32 +293,32 @@ namespace TerGen{
     };
 
     inline std::map<std::string, std::vector<Generator>> Generators;
-    inline std::map<std::string, std::vector<std::function<float(Vector2)>>> Layers;
+    inline std::map<std::string, std::vector<std::function<double(Vector2)>>> Layers;
 
     std::vector<std::string> Split(const std::string& s, char delim);
 
     extern unsigned long Rand();
 
-    extern int Sign(float x);
+    extern int Sign(double x);
 
     extern int Clamp(int x, std::pair<int, int> MinMax);
 
-    extern void Init_Utils(float seed = -1);
+    extern void Init_Utils(double seed = -1);
 
-    extern float FBM(Vector2 Position, Generator* generator);
+    extern double FBM(Vector2 Position, Generator* generator);
 
-    extern float Noise(Vector2 Position, Generator* generator);
+    extern double Noise(Vector2 Position, Generator* generator);
 
-    extern float Noise(Vector3 Position, Generator* generator);
+    extern double Noise(Vector3 Position, Generator* generator);
 
-    extern float Warp_Noise(Vector2 Position, Generator* generator);
+    extern double Warp_Noise(Vector2 Position, Generator* generator);
 
     extern class Chunk* Get_Chunk(Vector3 Position, Vector2 Dimension);
 
-    extern float Gather_All_Layers(Vector2, std::string Layer_Name);
+    extern double Gather_All_Layers(Vector2, std::string Layer_Name);
 
     // Returns a list of points that are close to the given origin.
-    extern std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, unsigned int Radius, unsigned int Point_Count);
+    extern std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, int Radius, int Point_Count);
     
     extern bool Approximately(long double A, long double B, long double Range);
 

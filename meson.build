@@ -9,6 +9,7 @@ sources = [
 
   'src/Args.cpp',
   'src/Utils.cpp',
+  'src/Core.cpp',
 
   'main.cpp',
 ]
