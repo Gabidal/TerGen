@@ -2,6 +2,10 @@
 #include "Data.h"
 #include "Core.h"
 
+#include <math.h>
+
+using namespace std;
+
 namespace TerGen{
     double Current_Seed = 0;
 
@@ -23,12 +27,12 @@ namespace TerGen{
         }
     }
 
-    std::vector<std::string> Split(const std::string& s, char delim) {
-        std::vector<std::string> result;
-        std::stringstream ss(s);
-        std::string item;
+    vector<string> Split(const string& s, char delim) {
+        vector<string> result;
+        stringstream ss(s);
+        string item;
 
-        while (std::getline(ss, item, delim)) {
+        while (getline(ss, item, delim)) {
             result.push_back(item);
         }
 
@@ -58,14 +62,13 @@ namespace TerGen{
             return -1;
     }
 
-    int Clamp(int x, std::pair<int, int> MinMax) {
-        return std::min(std::max(x, MinMax.first), MinMax.second);
+    int Clamp(int x, pair<int, int> MinMax) {
+        return min(max(x, MinMax.first), MinMax.second);
     }
 
     void Init_Utils(double seed){
-        srand(time(NULL));
-        
         if (seed == -1)
+            srand(time(NULL));
             seed = rand();
 
         Current_Seed = seed;
@@ -152,7 +155,6 @@ namespace TerGen{
                     Gather_All_Layers(Vector2(Position.x + x, Position.y + y), Layer::HUMIDITY),
                     Gather_All_Layers(Vector2(Position.x + x, Position.y + y), Layer::TEMPERATURE)
                 );
-
             }
         }
     }
@@ -172,10 +174,10 @@ namespace TerGen{
         return &Chunks[Position];
     }
 
-    double Gather_All_Layers(Vector2 position, std::string Layer_Name){
+    double Gather_All_Layers(Vector2 position, string Layer_Name){
         double Result = 0;
 
-        std::vector<std::function<double(Vector2)>> Current_Layer = Layers[Layer_Name];
+        vector<function<double(Vector2)>> Current_Layer = Layers[Layer_Name];
 
         for (auto f : Current_Layer) {
             Result += f(position);
@@ -184,15 +186,15 @@ namespace TerGen{
         return Result;
     }
 
-    std::vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, int Radius, int Point_Count){
+    vector<Vector2> Get_Sparsely_Surrounding_Points(Vector2 Position, int Radius, int Point_Count){
 
         // The number of points to generate within the radius.
         const int numPoints = Point_Count;
 
-        std::vector<Vector2> positions;
+        vector<Vector2> positions;
 
         // Calculate the spacing between the points.
-        double spacing = Radius / std::sqrt(numPoints);
+        double spacing = Radius / sqrt(numPoints);
 
         // Generate the points in a grid pattern.
         for (double i = -Radius; i <= Radius; i += spacing)
@@ -204,7 +206,7 @@ namespace TerGen{
                 double py = Position.y + j;
 
                 // Calculate the distance between the current point and the origin point.
-                double distance = std::sqrt(i * i + j * j);
+                double distance = sqrt(i * i + j * j);
 
                 // If the distance is within the radius, add the point to the vector.
                 if (distance <= Radius)
@@ -218,9 +220,7 @@ namespace TerGen{
     }
 
     bool Approximately(long double A, long double B, long double Range){
-        long double relErr = std::abs((A - B) / B);
+        long double relErr = abs((A - B) / B);
         return relErr <= Range;
     }
-
-
 }

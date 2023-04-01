@@ -1,6 +1,10 @@
 #include "Core.h"
 #include "Data.h"
 
+#include <math.h>
+
+using namespace std;
+
 namespace TerGen{
 
     // Returns a Generator, with the right options to suite the wanted octave.
